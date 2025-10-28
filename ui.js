@@ -334,7 +334,7 @@ export function showTestMenu() {
                 Rana Dorada (Incilius periglenes)
                 </button>
                 <button class="btn" data-path="/reto/paso" data-params='{"id": "08"}'>
-               Anteojito Bridado (Zosterops conspicillatus)
+                Anteojito Bridado (Zosterops conspicillatus)
                 </button>
                 <button class="btn" data-path="/reto/paso" data-params='{"id": "09"}'>
                 Dodo (Raphus cucullatus)
