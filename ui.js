@@ -51,6 +51,9 @@ function createModelViewer(species) {
                 <button class="btn ar-button" slot="ar-button">Ver en AR</button>
             </model-viewer>
         </div>
+        <div class="info-box-ar-tip">
+            💡 <strong>Pro Tip:</strong> Una vez que presiones "Ver en AR", busca el botón de captura de pantalla en tu dispositivo para tomar una foto con el animal.
+        </div>
     `;
 }
 
@@ -85,7 +88,7 @@ export function showSpeciesContent(speciesId) {
                     Busca el <strong>QR de ${nextSpecies.name}</strong>.
                 </p>
             </div>
-            <button class="btn" data-path="/reto/paso" data-params='{"id": "0${nextStep}".slice(-2)}'>Continuar Búsqueda</button>
+            <button class="btn" data-path="/reto/paso" data-params='{"id": "${('0' + nextStep).slice(-2)}"}'>Continuar Búsqueda</button>
         `;
     }
 
@@ -110,6 +113,7 @@ export function showSpeciesContent(speciesId) {
                 ${createProgressBar(currentStep + 1, TOTAL_SPECIES + 1)}
                 
                 ${nextMissionHTML}
+                <button id="ar-screenshot-button" class="btn">Tomar Foto</button>
             </div>
         </div>
     `;
@@ -259,7 +263,7 @@ export function showProgressMessage(progress) {
                 
                 ${createProgressBar(discovered.length + 1, TOTAL_SPECIES + 1)}
                 
-                <button class="btn mt-20" onclick="location.reload()">
+                <button class="btn mt-20" data-path="/reto/paso" data-params='{"id": "${missing[0]}"}'>
                     🔍 Continuar Búsqueda
                 </button>
             </div>

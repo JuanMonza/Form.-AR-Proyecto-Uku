@@ -50,25 +50,52 @@ function initializeApp() {
     const router = new Router();
 
     // Delegación de eventos centralizada para manejar todos los clics de la aplicación
-    document.body.addEventListener('click', e => {
-        // Botones del simulador de QR
-        const testButton = e.target.closest('#test-buttons .btn');
-        if (testButton) {
-            const path = testButton.dataset.path;
-            const params = testButton.dataset.params ? JSON.parse(testButton.dataset.params) : {};
+    document.body.addEventListener('click', async e => {
+        const navButton = e.target.closest('.btn[data-path]');
+        if (navButton) {
+            const path = navButton.dataset.path;
+            const params = navButton.dataset.params ? JSON.parse(navButton.dataset.params) : {};
             router.navigate(path, params);
             return;
         }
 
-        // Botón de descarga de certificado
         if (e.target.matches('#download-cert-btn')) {
             downloadCertificate();
             return;
         }
 
-        // Botones de navegación (ej: volver al inicio desde la página de error o bloqueo)
         if (e.target.matches('#go-to-register-btn') || e.target.matches('#go-to-home-btn')) {
             router.navigate('/reto/iniciar');
+            return;
+        }
+
+        if (e.target.matches('#ar-screenshot-button')) {
+            const modelViewer = document.querySelector('model-viewer');
+            if (modelViewer && modelViewer.arActive) {
+                try {
+                    const dataUrl = await modelViewer.screenshot();
+                    const img = document.createElement('img');
+                    img.src = dataUrl;
+                    img.style.width = '200px';
+                    img.style.position = 'fixed';
+                    img.style.top = '10px';
+                    img.style.left = '10px';
+                    img.style.zIndex = '9999';
+                    document.body.appendChild(img);
+                    
+                    const a = document.createElement('a');
+                    a.href = dataUrl;
+                    a.download = 'captura-ar.png';
+                    a.click();
+
+                    setTimeout(() => img.remove(), 5000);
+                } catch (error) {
+                    console.error('Error taking screenshot:', error);
+                    alert('Error al tomar la captura de pantalla.');
+                }
+            } else if (modelViewer) {
+                alert('Debes estar en modo AR para tomar una foto.');
+            }
             return;
         }
     });
