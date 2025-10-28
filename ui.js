@@ -7,11 +7,11 @@ const loader = document.getElementById('loader');
 export const SPECIES_DATA = {
     '01': { name: 'Mamut Lanudo', model: 'mamut+modelo+3d.glb', facts: ['Vivieron durante la Era de Hielo.', 'Podían medir hasta 4 metros de altura.', 'Su pelaje los protegía de temperaturas de -40°C.'] },
     '02': { name: 'Tigre de Tasmania', model: 'tigre+tasmania+3d+model.glb', facts: ['Era el marsupial carnívoro más grande.', 'Podía abrir su mandíbula hasta 120 grados.', 'El último ejemplar murió en un zoológico en 1936.'] },
-    '03': { name: 'Rinoceronte', model: 'rhinoceros+3d+model.glb', facts: ['Especie antigua de la familia del rinoceronte.', 'Adaptado a climas fríos.', 'Pariente de los rinocerontes de Java y Sumatra.'] },
-    '04': { name: 'Manatí', model: 'manatee+3d+model.glb', facts: ['Mamífero marino herbívoro.', 'También conocido como "vaca marina".', 'Su pariente más cercano es el elefante.'] },
+    '03': { name: 'Rinoceronte Del Negro', model: 'rhinoceros+3d+model.glb', facts: ['Especie antigua de la familia del rinoceronte.', 'Adaptado a climas fríos.', 'Pariente de los rinocerontes de Java y Sumatra.'] },
+    '04': { name: 'Vaca Marina de Steller', model: 'manatee+3d+model.glb', facts: ['Mamífero marino herbívoro.', 'También conocido como "vaca marina".', 'Su pariente más cercano es el elefante.'] },
     '05': { name: 'Pato', model: 'mallard+duck+3d+model.glb', facts: ['Ancestro de la mayoría de los patos domésticos.', 'Se encuentra en todo el hemisferio norte.', 'Los machos tienen una cabeza verde brillante distintiva.'] },
     '06': { name: 'Foca', model: 'seal+3d+model.glb', facts: ['Mamífero marino carnívoro.', 'Excelentes nadadores.', 'Pueden dormir bajo el agua.'] },
-    '07': { name: 'Rana', model: 'orange+frog+3d+model.glb', facts: ['Anfibio de colores brillantes.', 'Su piel a menudo indica que es venenosa.', 'Ponen sus huevos en el agua.'] },
+    '07': { name: 'Rana Dorada', model: 'orange+frog+3d+model.glb', facts: ['Anfibio de colores brillantes.', 'Su piel a menudo indica que es venenosa.', 'Ponen sus huevos en el agua.'] },
     '08': { name: 'Pájaro', model: 'small+bird+3d+model.glb', facts: ['Ave pequeña y ágil.', 'Existen miles de especies en todo el mundo.', 'Algunos pueden imitar sonidos.'] },
     '09': { name: 'Dodo', model: '3d+model+Dodo+Bird.glb', facts: ['Vivía únicamente en la isla de Mauricio.', 'No podía volar.', 'Se extinguió por la caza y especies invasoras.'] }
 };
@@ -95,7 +95,7 @@ export function showSpeciesContent(speciesId) {
     const content = `
         <div class="content-card">
             <div class="species-card">
-                <h2 class="species-title">${species.name}</h2>
+                <img src="models/lanudo.png" alt="Mamut Lanudo" class="species-title" style="display:block;margin:0 auto 20px auto;max-width:300px;width:100%;">
                 
                 ${createModelViewer(species)}
                 
@@ -303,7 +303,7 @@ export function show404() {
 export function showTestMenu() {
     const content = `
         <div class="content-card">
-            <h2 class="text-primary-dark text-center mb-30">Escanea</h2>
+            <img src="models/Escanea.png" alt="Escanea" style="display:block;margin:0 auto 30px auto;max-width:400px;width:100%;">
             <p class="text-center mb-30">
                 Escanea nuestro Qr y vive una experiencia de Realidad Aumentada:
             </p>
