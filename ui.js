@@ -45,19 +45,24 @@ function createModelViewer(species) {
                 src="models/${species.model}"
                 alt="Modelo 3D de ${species.name}"
                 auto-rotate camera-controls ar ar-modes="webxr scene-viewer quick-look"
-                environment-image="neutral"
                 poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3E${species.name} 3D%3C/text%3E%3C/svg%3E"
-                shadow-intensity="1">
+                shadow-intensity="1"
+                style="background: transparent;">
                 <button class="btn ar-button" slot="ar-button">Ver en AR</button>
             </model-viewer>
         </div>
-        <div class="info-box-ar-tip">
-            💡 <strong>Pro Tip:</strong> Una vez que presiones "Ver en AR", busca el botón de captura de pantalla en tu dispositivo para tomar una foto con el animal.
-        </div>
+        <div class="info-box-ar-tip" id="ar-tip-box"></div>
     `;
 }
 
 // --- UI COMPONENTS ---
+// Detectar sistema operativo
+function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
+}
+function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
 
 export function showSpeciesContent(speciesId) {
     const species = SPECIES_DATA[speciesId];
@@ -128,6 +133,20 @@ export function showSpeciesContent(speciesId) {
         </div>
     `;
     render(content);
+    // Personalizar el mensaje AR según el sistema operativo
+    setTimeout(() => {
+        const arTipBox = document.getElementById('ar-tip-box');
+        if (arTipBox) {
+            arTipBox.innerHTML = isAndroid()
+                ? '💡 <strong>Pro Tip:</strong> En Android, usa el botón de captura de pantalla de tu dispositivo mientras ves el animal en AR. El botón "Tomar Foto" puede no estar disponible.'
+                : '💡 <strong>Pro Tip:</strong> En iOS, puedes usar el botón de la app para tomar la foto en AR.';
+            // Ocultar el botón en Android si no funciona
+            if (isAndroid()) {
+                const btnFoto = document.getElementById('ar-screenshot-button');
+                if (btnFoto) btnFoto.style.display = 'none';
+            }
+        }
+    }, 350);
 }
 
 export function showRegistrationForm() {
