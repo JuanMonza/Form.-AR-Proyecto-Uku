@@ -59,7 +59,24 @@ body {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-image: url('models/fondo%20selva%20africana.jpg');
+    background-image: url('models/fondo\ selva\ africana.jpg');
+    background-color: #2d5016;
+/* Fallback para iOS y navegadores que no muestran el fondo correctamente */
+@media not all and (min-resolution: 0.001dpcm) {
+    body {
+        background-image: url('models/fondo\ selva\ africana.jpg'), linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        background-blend-mode: overlay;
+        background-color: #2d5016;
+    }
+}
+@media screen and (max-width: 600px) {
+    body {
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+    }
+}
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
