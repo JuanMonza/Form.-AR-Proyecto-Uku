@@ -92,26 +92,36 @@ export function showSpeciesContent(speciesId) {
         `;
     }
 
+    // Generar el nombre de la imagen según la especie
+        let imageName = species.name.toLowerCase().replace(/ /g, '').replace(/[áéíóúñ]/g, function(match) {
+            const map = { 'á':'a', 'é':'e', 'í':'i', 'ó':'o', 'ú':'u', 'ñ':'n' };
+            return map[match];
+        });
+        if (speciesId === '01') imageName = 'Lanudo';
+        if (speciesId === '02') imageName = 'tigre';
+        if (speciesId === '03') imageName = 'rinoceronte';
+        if (speciesId === '04') imageName = 'vaca';
+        if (speciesId === '05') imageName = 'Pato';
+        if (speciesId === '06') imageName = 'FOCA';
+        if (speciesId === '07') imageName = 'Rana';
+        if (speciesId === '08') imageName = 'Anteojito';
+        if (speciesId === '09') imageName = 'Dodo';
+
     const content = `
         <div class="content-card">
             <div class="species-card">
-                <img src="models/lanudo.png" alt="Mamut Lanudo" class="species-title" style="display:block;margin:0 auto 20px auto;max-width:300px;width:100%;">
-                
+                <img src="models/${imageName}.png" alt="${species.name}" class="species-title" style="display:block;margin:0 auto 20px auto;max-width:300px;width:100%;">
                 ${createModelViewer(species)}
-                
                 <div class="info-box">
                     <h3 class="info-box-title">📚 Datos:</h3>
                     <ul class="info-list">
                         ${species.facts.map(fact => `<li>${fact}</li>`).join('')}
                     </ul>
                 </div>
-                
                 <div class="success-message">
                     ¡Especie descubierta! ${species.name} completado
                 </div>
-                
                 ${createProgressBar(currentStep + 1, TOTAL_SPECIES + 1)}
-                
                 ${nextMissionHTML}
                 <button id="ar-screenshot-button" class="btn">Tomar Foto</button>
             </div>
@@ -123,7 +133,7 @@ export function showSpeciesContent(speciesId) {
 export function showRegistrationForm() {
     const content = `
         <div class="content-card">
-            <h2 class="text-primary-dark text-center mb-20">🌟 ¡Bienvenido Explorador! 🌟</h2>
+            <img src="models/Bienvenido_Explorador.png" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
             <p class="text-center mb-30 fs-1-1">
                 Estás a punto de embarcarte en una misión única para descubrir ${TOTAL_SPECIES} especies. 
                 Completa tu registro para comenzar esta aventura.
@@ -187,13 +197,13 @@ export function showStartMessage(nombre) {
 export function showDodoAndCertificate(user) {
     const content = `
         <div class="content-card">
-            <div class="success-message fs-1-3 p-25">🎉 ¡GANASTE! Misión cumplida 🎉</div>
+            <img src="models/Ganaste_2025.png" alt="¡Ganaste!" class="success-image" style="display:block;margin:0 auto 20px auto;max-width:450px;width:100%;">
             
             ${createProgressBar(TOTAL_SPECIES + 1, TOTAL_SPECIES + 1)}
             
             <div class="certificate">
                 <div class="certificate-content">
-                    <h2 class="certificate-title">🏆 Certificado de Explorador Extinción 🏆</h2>
+                    <img src="models/Certificado_Explorador.png" alt="Certificado Explorador" class="certificate-title" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
                     <p class="certificate-text">
                         Se otorga a <strong>${user.nombreCompleto}</strong> 
                         por completar con éxito el Reto de Explorador Extinción 
@@ -300,6 +310,12 @@ export function show404() {
     render(content);
 }
 
+let qrPrincipalEscaneado = false;
+
+export function setQRPrincipalEscaneado(valor) {
+    qrPrincipalEscaneado = valor;
+}
+
 export function showTestMenu() {
     const content = `
         <div class="content-card">
@@ -307,41 +323,73 @@ export function showTestMenu() {
             <p class="text-center mb-30">
                 Escanea nuestro Qr y vive una experiencia de Realidad Aumentada:
             </p>
-            
             <div id="test-buttons" class="grid-buttons">
-                <button class="btn" data-path="/reto/iniciar">
+                <button class="btn" id="btn-iniciar-reto">
                 Inicia Tú Reto Ahora
                 </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "01"}'>
-                Mamut Lanudo (Mammuthus Primigenius)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "02"}'>
-                Tigre de Tasmania (Thylacinus Cynocephalus)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "03"}'>
-                Rinoceronte Negro Del Africa (Diceros Bicornis Longipes)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "04"}'>
-                Vaca Marina De Steller (Hydrodamalis gigas)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "05"}'>
-                Pato Zabullidor (Oxyura Vittata)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "06"}'>
-                Foca Monje Del Caribe (Neomonachus tropicalis)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "07"}'>
-                Rana Dorada (Incilius periglenes)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "08"}'>
-                Anteojito Bridado (Zosterops conspicillatus)
-                </button>
-                <button class="btn" data-path="/reto/paso" data-params='{"id": "09"}'>
-                Dodo (Raphus cucullatus)
-                </button>
-                <button class="btn" data-path="/reto/finalizar">
-                Certificado Final
-                </button>
+            </div>
+        </div>
+    `;
+    render(content);
+    setTimeout(() => {
+        const btnIniciar = document.getElementById('btn-iniciar-reto');
+        if (btnIniciar) {
+            btnIniciar.onclick = () => {
+                mostrarFormularioRegistro();
+            };
+        }
+    }, 350);
+}
+
+function mostrarFormularioRegistro() {
+    const content = `
+        <div class="content-card">
+            <img src="models/Bienvenido_Explorador.png" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
+            <p class="text-center mb-30 fs-1-1">
+                Estás a punto de embarcarte en una misión única para descubrir ${TOTAL_SPECIES} especies. 
+                Completa tu registro para comenzar esta aventura.
+            </p>
+            <form id="registration-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ingresa tu nombre completo">
+                </div>
+                <div class="form-group">
+                    <label for="telefono">Número de Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" required placeholder="Ingresa tu número de teléfono">
+                </div>
+                <button type="submit" class="btn">Iniciar Misión de Explorador</button>
+            </form>
+        </div>
+    `;
+    render(content);
+    setTimeout(() => {
+        const form = document.getElementById('registration-form');
+        if (form) {
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const nombre = form.nombre.value.trim();
+                const telefono = form.telefono.value.trim();
+                if (!nombre || !telefono) {
+                    showError('Por favor completa todos los campos para iniciar la aventura.');
+                    return;
+                }
+                mostrarEspeciesMenu();
+            };
+        }
+    }, 350);
+}
+
+function mostrarEspeciesMenu() {
+    const especiesBtns = Object.keys(SPECIES_DATA).map(id => {
+        return `<button class="btn" data-path="/reto/paso" data-params='{"id": "${id}"}'>${SPECIES_DATA[id].name}</button>`;
+    }).join('');
+    const content = `
+        <div class="content-card">
+            <h2 class="text-primary-dark text-center mb-20">Selecciona una especie para explorar</h2>
+            <div id="test-buttons" class="grid-buttons">
+                ${especiesBtns}
+                <button class="btn" data-path="/reto/finalizar">Certificado Final</button>
             </div>
         </div>
     `;
