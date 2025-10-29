@@ -64,7 +64,7 @@ body {
 /* Fallback para iOS y navegadores que no muestran el fondo correctamente */
 @media not all and (min-resolution: 0.001dpcm) {
     body {
-        background-image: url('models/fondo_selva_africana.jpg'), linear-gradient(135deg, #4a7c59 0%, #8fbc8f 100%);
+        background-image: url('models/fondo_selva_africana.jpg');
         background-blend-mode: overlay;
         background-color: #2d5016;
     }
