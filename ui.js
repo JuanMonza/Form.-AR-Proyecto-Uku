@@ -45,6 +45,7 @@ function createModelViewer(species) {
                 src="models/${species.model}"
                 alt="Modelo 3D de ${species.name}"
                 auto-rotate camera-controls ar ar-modes="webxr scene-viewer quick-look"
+                environment-image="neutral"
                 poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3E${species.name} 3D%3C/text%3E%3C/svg%3E"
                 shadow-intensity="1"
                 style="background: transparent;">

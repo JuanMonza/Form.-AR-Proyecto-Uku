@@ -1,17 +1,17 @@
-// js/tokenManager.js
+// js/tokenManager.js - Refactored to SessionManager
 
-const TOKEN_KEY = 'extinctionChallenge_token';
+const SESSION_KEY = 'extinctionChallenge_session_telefono';
 
-export class TokenManager {
-    static generateToken() {
-        return `token_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`;
+export class SessionManager {
+    static saveSession(telefono) {
+        localStorage.setItem(SESSION_KEY, telefono);
     }
 
-    static getToken() {
-        return localStorage.getItem(TOKEN_KEY);
+    static getSession() {
+        return localStorage.getItem(SESSION_KEY);
     }
 
-    static setToken(token) {
-        localStorage.setItem(TOKEN_KEY, token);
+    static clearSession() {
+        localStorage.removeItem(SESSION_KEY);
     }
 }

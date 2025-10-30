@@ -1,15 +1,23 @@
 // js/main.js
 import { Router } from './router.js';
-import { TokenManager } from './tokenManager.js';
+import { SessionManager } from './tokenManager.js'; // Now SessionManager
 import { Database } from './database.js';
 import * as UI from './ui.js';
 
-function downloadCertificate() {
-    const token = TokenManager.getToken();
-    const db = new Database();
-    const user = db.getUser(token);
+async function downloadCertificate() {
+    const telefono = SessionManager.getSession();
+    if (!telefono) {
+        alert('No se encontró una sesión de usuario. Por favor, regístrate de nuevo.');
+        return;
+    }
 
-    if (!user) return;
+    const db = new Database();
+    const user = await db.getUser(telefono);
+
+    if (!user) {
+        alert('No se pudieron obtener los datos del usuario para el certificado.');
+        return;
+    }
 
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -26,7 +34,7 @@ function downloadCertificate() {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
-    const mainText = `Se otorga a ${user.nombreCompleto} por completar con éxito el Reto de Explorador Extinción del Bioparque Ukumarí.`;
+    const mainText = `Se otorga a ${user.nombre_completo} por completar con éxito el Reto de Explorador Extinción del Bioparque Ukumarí.`;
     const splitText = doc.splitTextToSize(mainText, 160);
     doc.text(splitText, 105, 100, { align: 'center' });
 
@@ -43,7 +51,7 @@ function downloadCertificate() {
     doc.setFontSize(10);
     doc.text(`Fecha: ${new Date().toLocaleDateString('es-CO')}`, 105, 200, { align: 'center' });
 
-    doc.save(`Certificado_Explorador_Extincion_${user.nombreCompleto.replace(/\s+/g, '_')}.pdf`);
+    doc.save(`Certificado_Explorador_Extincion_${user.nombre_completo.replace(/\s+/g, '_')}.pdf`);
 }
 
 function initializeApp() {
@@ -60,7 +68,7 @@ function initializeApp() {
         }
 
         if (e.target.matches('#download-cert-btn')) {
-            downloadCertificate();
+            await downloadCertificate();
             return;
         }
 
@@ -101,10 +109,10 @@ function initializeApp() {
     });
 
     // Delegación para el envío del formulario de registro
-    document.body.addEventListener('submit', e => {
+    document.body.addEventListener('submit', async e => {
         if (e.target.matches('#registration-form')) {
             e.preventDefault();
-            router.processRegistration(e.target);
+            await router.processRegistration(e.target);
         }
     });
 

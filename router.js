@@ -1,8 +1,7 @@
 // js/router.js
 import { Database } from './database.js';
-import { TokenManager } from './tokenManager.js';
+import { SessionManager } from './tokenManager.js'; // Now SessionManager
 import * as UI from './ui.js';
-
 import { SPECIES_DATA } from './ui.js';
 
 export class Router {
@@ -13,7 +12,6 @@ export class Router {
             '/reto/paso': this.handleStep.bind(this),
             '/reto/finalizar': this.handleFinish.bind(this)
         };
-
     }
 
     navigate(path, params = {}) {
@@ -26,35 +24,57 @@ export class Router {
     }
 
     handleStart() {
+        // If a user session already exists, maybe take them to their current step?
+        // For now, we just show the registration form as requested.
         UI.showRegistrationForm();
     }
 
-    processRegistration(form) {
+    async processRegistration(form) {
         const formData = new FormData(form);
         const userData = {
-            nombreCompleto: formData.get('nombre').trim(),
-            numeroTelefono: formData.get('telefono').trim()
+            nombre: formData.get('nombre').trim(),
+            telefono: formData.get('telefono').trim()
         };
 
-        if (!userData.nombreCompleto || !userData.numeroTelefono) {
+        if (!userData.nombre || !userData.telefono) {
             UI.showError('Por favor completa todos los campos obligatorios.');
             return;
         }
 
-        const token = TokenManager.generateToken();
-        TokenManager.setToken(token);
-        this.db.saveUser(token, userData);
+        // Attempt to save the user to Supabase
+        const { data: newUser, error } = await this.db.saveUser(userData);
 
-        UI.showStartMessage(userData.nombreCompleto);
+        if (error) {
+            // Handle specific errors, like a user already existing (unique constraint)
+            if (error.code === '23505') { // PostgreSQL unique violation code
+                UI.showError('Este número de teléfono ya está registrado. Intenta continuar con tu reto.');
+            } else {
+                UI.showError(`Error en el registro: ${error.message}`);
+            }
+            return;
+        }
+
+        if (newUser) {
+            // Registration successful, save session and show start message
+            SessionManager.saveSession(newUser.telefono);
+            UI.showStartMessage(newUser.nombre_completo);
+        } else {
+            UI.showError('Ocurrió un error inesperado durante el registro.');
+        }
     }
 
-    handleStep(params) {
+    async handleStep(params) {
         const stepId = params.id;
-        const token = TokenManager.getToken();
-        const user = this.db.getUser(token);
+        const telefono = SessionManager.getSession();
 
+        if (!telefono) {
+            UI.showBlockedMessage(); // Not registered or session cleared
+            return;
+        }
+
+        const user = await this.db.getUser(telefono);
         if (!user) {
-            UI.showBlockedMessage();
+            UI.showBlockedMessage(); // User not found in DB
             return;
         }
 
@@ -64,38 +84,47 @@ export class Router {
             return;
         }
 
+        // Check if previous steps are completed
         const currentStep = parseInt(stepId, 10);
         if (currentStep > 1) {
             const prevStepId = `0${currentStep - 1}`.slice(-2);
             const prevQrId = `QR_${prevStepId}_Completado`;
-            if (!user[prevQrId]) {
-                UI.showProgressMessage(user);
+            if (!user.progreso[prevQrId]) {
+                UI.showProgressMessage(user.progreso); // Show missing steps
                 return;
             }
         }
 
+        // Update progress for the current step
         const qrId = `QR_${stepId}_Completado`;
-        this.db.updateProgress(token, qrId);
+        if (!user.progreso[qrId]) { // Avoid unnecessary updates
+            await this.db.updateProgress(telefono, qrId);
+        }
 
         UI.showSpeciesContent(stepId);
     }
 
-    handleFinish() {
-        const token = TokenManager.getToken();
-        const user = this.db.getUser(token);
+    async handleFinish() {
+        const telefono = SessionManager.getSession();
+        if (!telefono) {
+            UI.showBlockedMessage();
+            return;
+        }
 
+        const user = await this.db.getUser(telefono);
         if (!user) {
             UI.showBlockedMessage();
             return;
         }
 
+        // Check if all species have been discovered
         const allCompleted = Object.keys(SPECIES_DATA).every(stepId => {
             const qrId = `QR_${stepId}_Completado`;
-            return user[qrId];
+            return user.progreso[qrId];
         });
 
         if (!allCompleted) {
-            UI.showProgressMessage(user);
+            UI.showProgressMessage(user.progreso);
             return;
         }
 
