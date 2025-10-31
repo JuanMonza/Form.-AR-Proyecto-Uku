@@ -45,6 +45,9 @@ export class Router {
         const { data: newUser, error } = await this.db.saveUser(userData);
 
         if (error) {
+            // Log the full error to the console for debugging
+            console.error('Error details from Supabase:', error);
+
             // Handle specific errors, like a user already existing (unique constraint)
             if (error.code === '23505') { // PostgreSQL unique violation code
                 UI.showError('Este número de teléfono ya está registrado. Intenta continuar con tu reto.');
