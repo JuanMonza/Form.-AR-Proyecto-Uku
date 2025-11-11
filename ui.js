@@ -40,18 +40,20 @@ function createProgressBar(current, total) {
 
 function createModelViewer(species) {
     return `
-        <div class="ar-container">
-            <model-viewer
-                src="models/${species.model}"
-                alt="Modelo 3D de ${species.name}"
-                auto-rotate camera-controls ar ar-modes="webxr scene-viewer quick-look"
-                environment-image="neutral"
-                poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3E${species.name} 3D%3C/text%3E%3C/svg%3E"
-                shadow-intensity="1"
-                style="background: transparent;">
-                <button class="btn ar-button" slot="ar-button">Ver en AR</button>
-            </model-viewer>
-        </div>
+        <model-viewer
+            src="models/${species.model}"
+            alt="Modelo 3D de ${species.name}"
+            auto-rotate 
+            camera-controls 
+            ar 
+            ar-modes="webxr scene-viewer quick-look"
+            skybox-image=""
+            exposure="1.2"
+            shadow-intensity="0.5"
+            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='%23f0f0f0'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3ECargando...%3C/text%3E%3C/svg%3E"
+            style="width: 100%; height: 400px;">
+            <button class="btn ar-button" slot="ar-button">Ver en AR</button>
+        </model-viewer>
         <div class="info-box-ar-tip" id="ar-tip-box"></div>
     `;
 }
@@ -225,7 +227,7 @@ export function showDodoAndCertificate(user) {
                 <div class="certificate-content">
                     <img src="models/Certificado_Explorador.png" alt="Certificado Explorador" class="certificate-title" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
                     <p class="certificate-text">
-                        Se otorga a <strong>${user.nombreCompleto}</strong> 
+                        Se otorga a <strong>${user.nombre_completo}</strong> 
                         por completar con éxito el Reto de Explorador Extinción 
                         del Bioparque Ukumarí.
                     </p>

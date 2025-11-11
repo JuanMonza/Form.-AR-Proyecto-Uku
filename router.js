@@ -46,19 +46,32 @@ export class Router {
 
         if (error) {
             // Log the full error to the console for debugging
-            console.error('Error details from Supabase:', error);
+            console.error('❌ Error details from Supabase:', error);
 
             // Handle specific errors, like a user already existing (unique constraint)
-            if (error.code === '23505') { // PostgreSQL unique violation code
-                UI.showError('Este número de teléfono ya está registrado. Intenta continuar con tu reto.');
+            if (error.code === '23505') { 
+                // PostgreSQL unique violation code - user already exists
+                console.log('⚠️ Usuario ya existe, recuperando datos...');
+                const existingUser = await this.db.getUser(userData.telefono);
+                
+                if (existingUser) {
+                    console.log('✅ Usuario existente encontrado, continuando sesión');
+                    SessionManager.saveSession(existingUser.telefono);
+                    UI.showStartMessage(existingUser.nombre_completo);
+                    return;
+                } else {
+                    UI.showError('Este número de teléfono ya está registrado pero no se pudieron recuperar los datos.');
+                    return;
+                }
             } else {
                 UI.showError(`Error en el registro: ${error.message}`);
+                return;
             }
-            return;
         }
 
         if (newUser) {
             // Registration successful, save session and show start message
+            console.log('✅ Nuevo usuario registrado exitosamente');
             SessionManager.saveSession(newUser.telefono);
             UI.showStartMessage(newUser.nombre_completo);
         } else {

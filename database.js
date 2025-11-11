@@ -26,7 +26,10 @@ export class Database {
         const nombreLimpio = sanitize(userData.nombre);
         const telefonoLimpio = sanitize(userData.telefono);
 
+        console.log('📝 Intentando guardar usuario:', { nombre: nombreLimpio, telefono: telefonoLimpio });
+
         if (!nombreLimpio || !telefonoLimpio) {
+            console.error('❌ Error: Nombre y teléfono son obligatorios');
             return { data: null, error: { message: 'Nombre y teléfono son obligatorios.' } };
         }
 
@@ -36,6 +39,12 @@ export class Database {
             const speciesId = `0${i}`.slice(-2);
             initialProgress[`QR_${speciesId}_Completado`] = false;
         }
+
+        console.log('🔄 Enviando a Supabase...', { 
+            nombre_completo: nombreLimpio, 
+            telefono: telefonoLimpio, 
+            progreso: initialProgress 
+        });
 
         const { data, error } = await supabase
             .from('exploradores')
@@ -48,6 +57,17 @@ export class Database {
             ])
             .select()
             .single(); // .single() returns the inserted row as an object, not an array
+
+        if (error) {
+            console.error('❌ Error de Supabase al guardar:', {
+                code: error.code,
+                message: error.message,
+                details: error.details,
+                hint: error.hint
+            });
+        } else {
+            console.log('✅ Usuario guardado exitosamente:', data);
+        }
 
         return { data, error };
     }
@@ -84,18 +104,22 @@ export class Database {
         const telefonoLimpio = sanitize(telefono);
         const qrIdLimpio = sanitize(qrId);
 
+        console.log('🔄 Actualizando progreso:', { telefono: telefonoLimpio, qrId: qrIdLimpio });
+
         if (!telefonoLimpio || !qrIdLimpio) return false;
 
         // 1. Get the user's current progress
         const user = await this.getUser(telefonoLimpio);
         if (!user) {
-            console.error('Cannot update progress: user not found.');
+            console.error('❌ No se puede actualizar progreso: usuario no encontrado.');
             return false;
         }
 
         // 2. Update the progress object
         const newProgress = user.progreso || {};
         newProgress[qrIdLimpio] = true;
+
+        console.log('📊 Nuevo progreso:', newProgress);
 
         // 3. Save the updated progress back to Supabase
         const { error } = await supabase
@@ -104,10 +128,11 @@ export class Database {
             .eq('telefono', telefonoLimpio);
 
         if (error) {
-            console.error('Error updating progress:', error);
+            console.error('❌ Error actualizando progreso:', error);
             return false;
         }
         
+        console.log('✅ Progreso actualizado exitosamente');
         return true;
     }
 }
