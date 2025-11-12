@@ -4,6 +4,15 @@ import { SessionManager } from './tokenManager.js'; // Now SessionManager
 import { Database } from './database.js';
 import * as UI from './ui.js';
 
+// Register Service Worker for caching
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {
+            // Service worker registration failed, continue without it
+        });
+    });
+}
+
 async function downloadCertificate() {
     const telefono = SessionManager.getSession();
     if (!telefono) {

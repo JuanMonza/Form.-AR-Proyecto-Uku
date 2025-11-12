@@ -12,6 +12,18 @@
     box-sizing: border-box;
 }
 
+/* Prevent layout shift for images */
+img {
+    height: auto;
+    max-width: 100%;
+}
+
+.reto-explorador-titulo {
+    aspect-ratio: 600 / 322;
+    width: 100%;
+    max-width: 600px;
+}
+
 @media (max-width: 300px) {
     .logo {
         height: 180% !important;

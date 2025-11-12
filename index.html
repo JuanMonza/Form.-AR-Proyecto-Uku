@@ -6,13 +6,29 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://iypktjmnerhyouqmimnn.supabase.co wss://iypktjmnerhyouqmimnn.supabase.co https://unpkg.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net blob:;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reto Explorador Extinción - Ukumarí</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="models/Reto_Explorador_optimizado.webp" as="image" type="image/webp">
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="main.js" as="script">
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet"></noscript>
+    
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="models/favicon.ico" type="image/x-icon">
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Defer non-critical scripts -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 </head>
 
 <body>
@@ -22,18 +38,18 @@
 
     <main class="container">
         <header class="header">
-            <img src="models/Reto_Explorador_optimizado.webp" alt="Reto Explorador" class="reto-explorador-titulo" loading="lazy" width="600" height="322" style="display:block;margin:0px auto 10px auto;max-width:600px;width:100%;height:auto;">
+            <img src="models/Reto_Explorador_optimizado.webp" alt="Reto Explorador" class="reto-explorador-titulo" fetchpriority="high" width="600" height="322" style="display:block;margin:0px auto 10px auto;max-width:600px;width:100%;height:auto;">
             <div class="logo-carousel">
                 <div class="carousel-track">
-                    <img src="models/jardines.webp" alt="Jardines" class="carousel-logo">
-                    <img src="models/Ukumari.webp" alt="Ukumari" class="carousel-logo">
-                    <img src="models/rm.webp" alt="RM" class="carousel-logo">
-                    <img src="models/vive.webp" alt="Vive" class="carousel-logo">
+                    <img src="models/jardines.webp" alt="Jardines" class="carousel-logo" loading="lazy">
+                    <img src="models/Ukumari.webp" alt="Ukumari" class="carousel-logo" loading="lazy">
+                    <img src="models/rm.webp" alt="RM" class="carousel-logo" loading="lazy">
+                    <img src="models/vive.webp" alt="Vive" class="carousel-logo" loading="lazy">
                     <!-- Duplicados para efecto infinito -->
-                    <img src="models/jardines.webp" alt="Jardines" class="carousel-logo">
-                    <img src="models/Ukumari.webp" alt="Ukumari" class="carousel-logo">
-                    <img src="models/rm.webp" alt="RM" class="carousel-logo">
-                    <img src="models/vive.webp" alt="Vive" class="carousel-logo">
+                    <img src="models/jardines.webp" alt="Jardines" class="carousel-logo" loading="lazy">
+                    <img src="models/Ukumari.webp" alt="Ukumari" class="carousel-logo" loading="lazy">
+                    <img src="models/rm.webp" alt="RM" class="carousel-logo" loading="lazy">
+                    <img src="models/vive.webp" alt="Vive" class="carousel-logo" loading="lazy">
                 </div>
             </div>
         </header>
@@ -43,6 +59,9 @@
         </div>
     </main>
 
+    <!-- Defer 3D viewer and PDF library -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
     <script type="module" src="main.js"></script>
 </body>
 
