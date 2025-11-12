@@ -428,6 +428,7 @@ function mostrarFormularioRegistro() {
                            autocomplete="name"
                            title="Ingresa tu nombre completo">
                 </div>
+                
                 <div class="form-group">
                     <label for="telefono">Número de Teléfono</label>
                     <input type="tel" id="telefono" name="telefono" required 
@@ -438,6 +439,17 @@ function mostrarFormularioRegistro() {
                            inputmode="numeric"
                            title="Solo se permiten números (7-10 dígitos)">
                 </div>
+                
+                <div class="form-group">
+                    <label for="ciudad">Ciudad</label>
+                    <input type="text" id="ciudad" name="ciudad" required 
+                           placeholder="Ingresa tu ciudad"
+                           minlength="2"
+                           maxlength="50"
+                           autocomplete="address-level2"
+                           title="Ingresa tu ciudad">
+                </div>
+                
                 <button type="submit" class="btn">Iniciar Misión de Explorador</button>
             </form>
         </div>
@@ -447,6 +459,7 @@ function mostrarFormularioRegistro() {
         // Agregar validación en tiempo real
         const nombreInput = document.getElementById('nombre');
         const telefonoInput = document.getElementById('telefono');
+        const ciudadInput = document.getElementById('ciudad');
         
         if (nombreInput) {
             nombreInput.addEventListener('input', (e) => {
@@ -462,13 +475,21 @@ function mostrarFormularioRegistro() {
             });
         }
         
+        if (ciudadInput) {
+            ciudadInput.addEventListener('input', (e) => {
+                // Solo permitir letras, espacios y guiones
+                e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]/g, '');
+            });
+        }
+        
         const form = document.getElementById('registration-form');
         if (form) {
             form.onsubmit = (e) => {
                 e.preventDefault();
                 const nombre = form.nombre.value.trim();
                 const telefono = form.telefono.value.trim();
-                if (!nombre || !telefono) {
+                const ciudad = form.ciudad.value.trim();
+                if (!nombre || !telefono || !ciudad) {
                     showError('Por favor completa todos los campos para iniciar la aventura.');
                     return;
                 }
