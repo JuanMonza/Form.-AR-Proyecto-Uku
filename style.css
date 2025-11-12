@@ -1,3 +1,17 @@
+/* Optimizaciones de performance */
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Montserrat Bold'), local('Montserrat-Bold');
+}
+
+/* Critical CSS - Above the fold */
+* {
+    box-sizing: border-box;
+}
+
 @media (max-width: 300px) {
     .logo {
         height: 180% !important;
@@ -10,6 +24,7 @@
         max-width: 320px !important;
     }
 }
+
 :root {
     --primary-dark-green: #2d5016;
     --primary-green: #4a7c59;
@@ -662,6 +677,9 @@ model-viewer {
     align-items: center;
     animation: scroll 20s linear infinite;
     width: max-content;
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
 }
 
 .carousel-logo {
@@ -670,18 +688,20 @@ model-viewer {
     object-fit: contain;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     transition: transform 0.3s ease;
+    will-change: transform;
+    transform: translateZ(0);
 }
 
 .carousel-logo:hover {
-    transform: scale(1.1);
+    transform: scale(1.1) translateZ(0);
 }
 
 @keyframes scroll {
     0% {
-        transform: translateX(0);
+        transform: translateX(0) translateZ(0);
     }
     100% {
-        transform: translateX(-50%);
+        transform: translateX(-50%) translateZ(0);
     }
 }
 
