@@ -118,7 +118,7 @@ export function showSpeciesContent(speciesId) {
     const content = `
         <div class="content-card">
             <div class="species-card">
-                <img src="models/${imageName}.png" alt="${species.name}" class="species-title" style="display:block;margin:0 auto 20px auto;max-width:300px;width:100%;">
+                <img src="models/${imageName}.webp" alt="${species.name}" class="species-title" style="display:block;margin:0 auto 20px auto;max-width:300px;width:100%;">
                 ${createModelViewer(species)}
                 <div class="info-box">
                     <h3 class="info-box-title">📚 Datos:</h3>
@@ -155,7 +155,7 @@ export function showSpeciesContent(speciesId) {
 export function showRegistrationForm() {
     const content = `
         <div class="content-card">
-            <img src="models/Bienvenido_Explorador.png" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
+            <img src="models/Bienvenido_Explorador.webp" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
             <p class="text-center mb-30 fs-1-1">
                 Estás a punto de embarcarte en una misión única para descubrir ${TOTAL_SPECIES} especies. 
                 Completa tu registro para comenzar esta aventura.
@@ -219,13 +219,13 @@ export function showStartMessage(nombre) {
 export function showDodoAndCertificate(user) {
     const content = `
         <div class="content-card">
-            <img src="models/Ganaste_2025.png" alt="¡Ganaste!" class="success-image" style="display:block;margin:0 auto 20px auto;max-width:450px;width:100%;">
+            <img src="models/Ganaste_2025.webp" alt="¡Ganaste!" class="success-image" style="display:block;margin:0 auto 20px auto;max-width:450px;width:100%;">
             
             ${createProgressBar(TOTAL_SPECIES + 1, TOTAL_SPECIES + 1)}
             
             <div class="certificate">
                 <div class="certificate-content">
-                    <img src="models/Certificado_Explorador.png" alt="Certificado Explorador" class="certificate-title" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
+                    <img src="models/Certificado_Explorador.webp" alt="Certificado Explorador" class="certificate-title" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
                     <p class="certificate-text">
                         Se otorga a <strong>${user.nombre_completo}</strong> 
                         por completar con éxito el Reto de Explorador Extinción 
@@ -341,7 +341,7 @@ export function setQRPrincipalEscaneado(valor) {
 export function showTestMenu() {
     const content = `
         <div class="content-card">
-            <img src="models/Escanea.png" alt="Escanea" style="display:block;margin:0 auto 30px auto;max-width:400px;width:100%;">
+            <img src="models/Escanea.webp" alt="Escanea" style="display:block;margin:0 auto 30px auto;max-width:400px;width:100%;">
             <p class="text-center mb-30">
                 Escanea nuestro Qr y vive una experiencia de Realidad Aumentada:
             </p>
@@ -366,7 +366,7 @@ export function showTestMenu() {
 function mostrarFormularioRegistro() {
     const content = `
         <div class="content-card">
-            <img src="models/Bienvenido_Explorador.png" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
+            <img src="models/Bienvenido_Explorador.webp" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
             <p class="text-center mb-30 fs-1-1">
                 Estás a punto de embarcarte en una misión única para descubrir ${TOTAL_SPECIES} especies. 
                 Completa tu registro para comenzar esta aventura.
