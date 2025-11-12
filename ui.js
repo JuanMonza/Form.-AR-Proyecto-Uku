@@ -165,13 +165,22 @@ export function showRegistrationForm() {
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
                     <input type="text" id="nombre" name="nombre" required 
-                           placeholder="Ingresa tu nombre completo">
+                           placeholder="Ingresa tu nombre completo"
+                           minlength="3"
+                           maxlength="100"
+                           autocomplete="name"
+                           title="Ingresa tu nombre completo">
                 </div>
                 
                 <div class="form-group">
                     <label for="telefono">Número de Teléfono</label>
                     <input type="tel" id="telefono" name="telefono" required 
-                           placeholder="Ingresa tu número de teléfono">
+                           placeholder="Ej: 3001234567"
+                           minlength="7"
+                           maxlength="10"
+                           autocomplete="tel"
+                           inputmode="numeric"
+                           title="Solo se permiten números (7-10 dígitos)">
                 </div>
                 
                 <button type="submit" class="btn">
@@ -181,6 +190,26 @@ export function showRegistrationForm() {
         </div>
     `;
     render(content);
+    
+    // Agregar validación en tiempo real después de renderizar
+    setTimeout(() => {
+        const nombreInput = document.getElementById('nombre');
+        const telefonoInput = document.getElementById('telefono');
+        
+        if (nombreInput) {
+            nombreInput.addEventListener('input', (e) => {
+                // Solo permitir letras y espacios, remover caracteres especiales
+                e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        }
+        
+        if (telefonoInput) {
+            telefonoInput.addEventListener('input', (e) => {
+                // Solo permitir números
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+        }
+    }, 100);
 }
 
 export function showStartMessage(nombre) {
@@ -374,11 +403,22 @@ function mostrarFormularioRegistro() {
             <form id="registration-form">
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
-                    <input type="text" id="nombre" name="nombre" required placeholder="Ingresa tu nombre completo">
+                    <input type="text" id="nombre" name="nombre" required 
+                           placeholder="Ingresa tu nombre completo"
+                           minlength="3"
+                           maxlength="100"
+                           autocomplete="name"
+                           title="Ingresa tu nombre completo">
                 </div>
                 <div class="form-group">
                     <label for="telefono">Número de Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" required placeholder="Ingresa tu número de teléfono">
+                    <input type="tel" id="telefono" name="telefono" required 
+                           placeholder="Ej: 3001234567"
+                           minlength="7"
+                           maxlength="10"
+                           autocomplete="tel"
+                           inputmode="numeric"
+                           title="Solo se permiten números (7-10 dígitos)">
                 </div>
                 <button type="submit" class="btn">Iniciar Misión de Explorador</button>
             </form>
@@ -386,6 +426,24 @@ function mostrarFormularioRegistro() {
     `;
     render(content);
     setTimeout(() => {
+        // Agregar validación en tiempo real
+        const nombreInput = document.getElementById('nombre');
+        const telefonoInput = document.getElementById('telefono');
+        
+        if (nombreInput) {
+            nombreInput.addEventListener('input', (e) => {
+                // Solo permitir letras y espacios, remover caracteres especiales
+                e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        }
+        
+        if (telefonoInput) {
+            telefonoInput.addEventListener('input', (e) => {
+                // Solo permitir números
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+        }
+        
         const form = document.getElementById('registration-form');
         if (form) {
             form.onsubmit = (e) => {

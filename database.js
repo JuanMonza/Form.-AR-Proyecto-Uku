@@ -11,6 +11,50 @@ function sanitize(str) {
     return str.replace(/<[^>]*>?/gm, '');
 }
 
+/**
+ * Normalizes text by removing accents and special characters.
+ * @param {string} str The string to normalize.
+ * @returns {string} The normalized string.
+ */
+function normalizeText(str) {
+    if (!str) return '';
+    
+    // Remover tags HTML y scripts
+    str = str.replace(/<[^>]*>?/gm, '');
+    str = str.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+    
+    // Remover caracteres peligrosos
+    str = str.replace(/[<>\"'`]/g, '');
+    
+    // Limitar longitud máxima
+    str = str.substring(0, 100);
+    
+    // Convertir a minúsculas y remover acentos
+    const normalized = str.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    
+    // Capitalizar primera letra de cada palabra
+    return normalized.split(' ')
+        .filter(word => word.length > 0) // Remover espacios múltiples
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+        .trim();
+}
+
+/**
+ * Sanitizes and validates phone number.
+ * @param {string} phone The phone number to sanitize.
+ * @returns {string} The sanitized phone number (only digits).
+ */
+function sanitizePhone(phone) {
+    if (!phone) return '';
+    // Solo números, remover todo lo demás
+    const cleaned = phone.replace(/[^0-9]/g, '');
+    // Limitar longitud máxima a 15 dígitos (estándar internacional)
+    return cleaned.substring(0, 15);
+}
+
 export class Database {
     constructor() {
         // The constructor is no longer needed for localStorage.
@@ -23,14 +67,27 @@ export class Database {
      * @returns {Promise<{data: object, error: object}>}
      */
     async saveUser(userData) {
-        const nombreLimpio = sanitize(userData.nombre);
-        const telefonoLimpio = sanitize(userData.telefono);
+        // Normalizar nombre (sin acentos, sin caracteres especiales)
+        const nombreLimpio = normalizeText(userData.nombre);
+        // Sanitizar teléfono (solo números)
+        const telefonoLimpio = sanitizePhone(userData.telefono);
 
-        console.log('📝 Intentando guardar usuario:', { nombre: nombreLimpio, telefono: telefonoLimpio });
+        console.log('📝 Intentando guardar usuario:', { 
+            nombreOriginal: userData.nombre,
+            nombreNormalizado: nombreLimpio, 
+            telefonoOriginal: userData.telefono,
+            telefonoLimpio: telefonoLimpio 
+        });
 
-        if (!nombreLimpio || !telefonoLimpio) {
-            console.error('❌ Error: Nombre y teléfono son obligatorios');
-            return { data: null, error: { message: 'Nombre y teléfono son obligatorios.' } };
+        // Validaciones
+        if (!nombreLimpio || nombreLimpio.length < 3) {
+            console.error('❌ Error: Nombre debe tener al menos 3 caracteres');
+            return { data: null, error: { message: 'Nombre debe tener al menos 3 caracteres.' } };
+        }
+
+        if (!telefonoLimpio || telefonoLimpio.length < 7 || telefonoLimpio.length > 10) {
+            console.error('❌ Error: Teléfono debe tener entre 7 y 10 dígitos');
+            return { data: null, error: { message: 'Teléfono debe tener entre 7 y 10 dígitos.' } };
         }
 
         // Initialize progress for all species
@@ -78,7 +135,7 @@ export class Database {
      * @returns {Promise<object|null>} The user data or null if not found.
      */
     async getUser(telefono) {
-        const telefonoLimpio = sanitize(telefono);
+        const telefonoLimpio = sanitizePhone(telefono);
         if (!telefonoLimpio) return null;
 
         const { data, error } = await supabase
@@ -101,7 +158,7 @@ export class Database {
      * @returns {Promise<boolean>} True if successful, false otherwise.
      */
     async updateProgress(telefono, qrId) {
-        const telefonoLimpio = sanitize(telefono);
+        const telefonoLimpio = sanitizePhone(telefono);
         const qrIdLimpio = sanitize(qrId);
 
         console.log('🔄 Actualizando progreso:', { telefono: telefonoLimpio, qrId: qrIdLimpio });
