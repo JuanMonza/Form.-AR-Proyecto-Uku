@@ -33,10 +33,11 @@ export class Router {
         const formData = new FormData(form);
         const userData = {
             nombre: formData.get('nombre').trim(),
-            telefono: formData.get('telefono').trim()
+            telefono: formData.get('telefono').trim(),
+            ciudad: formData.get('ciudad').trim()
         };
 
-        if (!userData.nombre || !userData.telefono) {
+        if (!userData.nombre || !userData.telefono || !userData.ciudad) {
             UI.showError('Por favor completa todos los campos obligatorios.');
             return;
         }

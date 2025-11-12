@@ -63,7 +63,7 @@ export class Database {
 
     /**
      * Saves a new user to the Supabase database.
-     * @param {object} userData - Contains nombre and telefono.
+     * @param {object} userData - Contains nombre, telefono, and ciudad.
      * @returns {Promise<{data: object, error: object}>}
      */
     async saveUser(userData) {
@@ -71,12 +71,16 @@ export class Database {
         const nombreLimpio = normalizeText(userData.nombre);
         // Sanitizar teléfono (solo números)
         const telefonoLimpio = sanitizePhone(userData.telefono);
+        // Normalizar ciudad
+        const ciudadLimpia = normalizeText(userData.ciudad);
 
         console.log('📝 Intentando guardar usuario:', { 
             nombreOriginal: userData.nombre,
             nombreNormalizado: nombreLimpio, 
             telefonoOriginal: userData.telefono,
-            telefonoLimpio: telefonoLimpio 
+            telefonoLimpio: telefonoLimpio,
+            ciudadOriginal: userData.ciudad,
+            ciudadNormalizada: ciudadLimpia
         });
 
         // Validaciones
@@ -90,6 +94,11 @@ export class Database {
             return { data: null, error: { message: 'Teléfono debe tener entre 7 y 10 dígitos.' } };
         }
 
+        if (!ciudadLimpia || ciudadLimpia.length < 2) {
+            console.error('❌ Error: Ciudad debe tener al menos 2 caracteres');
+            return { data: null, error: { message: 'Ciudad debe tener al menos 2 caracteres.' } };
+        }
+
         // Initialize progress for all species
         const initialProgress = {};
         for (let i = 1; i <= 9; i++) {
@@ -99,7 +108,8 @@ export class Database {
 
         console.log('🔄 Enviando a Supabase...', { 
             nombre_completo: nombreLimpio, 
-            telefono: telefonoLimpio, 
+            telefono: telefonoLimpio,
+            ciudad: ciudadLimpia,
             progreso: initialProgress 
         });
 
@@ -109,6 +119,7 @@ export class Database {
                 { 
                     nombre_completo: nombreLimpio, 
                     telefono: telefonoLimpio,
+                    ciudad: ciudadLimpia,
                     progreso: initialProgress
                 },
             ])

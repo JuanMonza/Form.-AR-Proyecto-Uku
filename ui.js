@@ -183,6 +183,16 @@ export function showRegistrationForm() {
                            title="Solo se permiten números (7-10 dígitos)">
                 </div>
                 
+                <div class="form-group">
+                    <label for="ciudad">Ciudad</label>
+                    <input type="text" id="ciudad" name="ciudad" required 
+                           placeholder="Ingresa tu ciudad"
+                           minlength="2"
+                           maxlength="50"
+                           autocomplete="address-level2"
+                           title="Ingresa tu ciudad">
+                </div>
+                
                 <button type="submit" class="btn">
                     Iniciar Misión de Explorador
                 </button>
@@ -195,6 +205,7 @@ export function showRegistrationForm() {
     setTimeout(() => {
         const nombreInput = document.getElementById('nombre');
         const telefonoInput = document.getElementById('telefono');
+        const ciudadInput = document.getElementById('ciudad');
         
         if (nombreInput) {
             nombreInput.addEventListener('input', (e) => {
@@ -207,6 +218,13 @@ export function showRegistrationForm() {
             telefonoInput.addEventListener('input', (e) => {
                 // Solo permitir números
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+        }
+        
+        if (ciudadInput) {
+            ciudadInput.addEventListener('input', (e) => {
+                // Solo permitir letras, espacios y guiones
+                e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]/g, '');
             });
         }
     }, 100);
