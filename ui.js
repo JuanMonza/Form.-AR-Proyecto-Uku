@@ -155,6 +155,7 @@ export function showSpeciesContent(speciesId) {
 }
 
 export function showRegistrationForm() {
+    console.log('📝 showRegistrationForm() - Renderizando formulario');
     const content = `
         <div class="content-card">
             <img src="models/Bienvenido_Explorador.webp" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
@@ -194,8 +195,13 @@ export function showRegistrationForm() {
                            autocomplete="address-level2"
                            title="Ingresa tu ciudad">
                 </div>
+
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="age-check" name="age-check">
+                    <label for="age-check">Soy mayor de 18 años</label>
+                </div>
                 
-                <button type="submit" class="btn">
+                <button type="submit" id="submit-registration" class="btn" disabled>
                     Iniciar Misión de Explorador
                 </button>
             </form>
@@ -205,14 +211,45 @@ export function showRegistrationForm() {
     
     // Agregar validación en tiempo real después de renderizar
     setTimeout(() => {
+        console.log('🔍 Configurando validación del formulario');
+        const ageCheck = document.getElementById('age-check');
+        const submitBtn = document.getElementById('submit-registration');
         const nombreInput = document.getElementById('nombre');
         const telefonoInput = document.getElementById('telefono');
         const ciudadInput = document.getElementById('ciudad');
+
+        if (!ageCheck || !submitBtn || !nombreInput || !telefonoInput || !ciudadInput) {
+            console.error('❌ Error: No se encontraron todos los elementos del formulario');
+            return;
+        }
+
+        // Asegurar que el checkbox inicia unchecked
+        ageCheck.checked = false;
+        submitBtn.disabled = true;
+
+        // Función para validar si el formulario está completo
+        const validateForm = () => {
+            const allFieldsFilled = nombreInput.value.trim().length >= 3 && 
+                                   telefonoInput.value.trim().length >= 7 && 
+                                   ciudadInput.value.trim().length >= 2;
+            const ageChecked = ageCheck.checked;
+            const isEnabled = allFieldsFilled && ageChecked;
+            submitBtn.disabled = !isEnabled;
+            console.log(`📋 Validación: nombre=${nombreInput.value.trim().length >= 3}, tel=${telefonoInput.value.trim().length >= 7}, ciudad=${ciudadInput.value.trim().length >= 2}, age=${ageChecked}, habilitado=${isEnabled}`);
+        };
+
+        if (ageCheck) {
+            ageCheck.addEventListener('change', () => {
+                console.log('✅ Checkbox de edad cambió a:', ageCheck.checked);
+                validateForm();
+            });
+        }
         
         if (nombreInput) {
             nombreInput.addEventListener('input', (e) => {
                 // Solo permitir letras y espacios, remover caracteres especiales
                 e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+                validateForm();
             });
         }
         
@@ -220,6 +257,7 @@ export function showRegistrationForm() {
             telefonoInput.addEventListener('input', (e) => {
                 // Solo permitir números
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                validateForm();
             });
         }
         
@@ -227,9 +265,12 @@ export function showRegistrationForm() {
             ciudadInput.addEventListener('input', (e) => {
                 // Solo permitir letras, espacios y guiones
                 e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]/g, '');
+                validateForm();
             });
         }
-    }, 100);
+
+        console.log('✅ Validadores configurados correctamente');
+    }, 350);
 }
 
 export function showStartMessage(nombre) {
@@ -402,117 +443,5 @@ export function showTestMenu() {
         </div>
     `;
     render(content);
-    setTimeout(() => {
-        const btnIniciar = document.getElementById('btn-iniciar-reto');
-        if (btnIniciar) {
-            btnIniciar.onclick = () => {
-                mostrarFormularioRegistro();
-            };
-        }
-    }, 350);
 }
 
-function mostrarFormularioRegistro() {
-    const content = `
-        <div class="content-card">
-            <img src="models/Bienvenido_Explorador.webp" alt="Bienvenido Explorador" style="display:block;margin:0 auto 20px auto;max-width:350px;width:100%;">
-            <p class="text-center mb-30 fs-1-1">
-                Estás a punto de embarcarte en una misión única para descubrir ${TOTAL_SPECIES} especies. 
-                Completa tu registro para comenzar esta aventura.
-            </p>
-            <form id="registration-form">
-                <div class="form-group">
-                    <label for="nombre">Nombre Completo</label>
-                    <input type="text" id="nombre" name="nombre" required 
-                           placeholder="Ingresa tu nombre completo"
-                           minlength="3"
-                           maxlength="100"
-                           autocomplete="name"
-                           title="Ingresa tu nombre completo">
-                </div>
-                
-                <div class="form-group">
-                    <label for="telefono">Número de Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" required 
-                           placeholder="Ej: 3001234567"
-                           minlength="7"
-                           maxlength="10"
-                           autocomplete="tel"
-                           inputmode="numeric"
-                           title="Solo se permiten números (7-10 dígitos)">
-                </div>
-                
-                <div class="form-group">
-                    <label for="ciudad">Ciudad</label>
-                    <input type="text" id="ciudad" name="ciudad" required 
-                           placeholder="Ingresa tu ciudad"
-                           minlength="2"
-                           maxlength="50"
-                           autocomplete="address-level2"
-                           title="Ingresa tu ciudad">
-                </div>
-                
-                <button type="submit" class="btn">Iniciar Misión de Explorador</button>
-            </form>
-        </div>
-    `;
-    render(content);
-    setTimeout(() => {
-        // Agregar validación en tiempo real
-        const nombreInput = document.getElementById('nombre');
-        const telefonoInput = document.getElementById('telefono');
-        const ciudadInput = document.getElementById('ciudad');
-        
-        if (nombreInput) {
-            nombreInput.addEventListener('input', (e) => {
-                // Solo permitir letras y espacios, remover caracteres especiales
-                e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-            });
-        }
-        
-        if (telefonoInput) {
-            telefonoInput.addEventListener('input', (e) => {
-                // Solo permitir números
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            });
-        }
-        
-        if (ciudadInput) {
-            ciudadInput.addEventListener('input', (e) => {
-                // Solo permitir letras, espacios y guiones
-                e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s-]/g, '');
-            });
-        }
-        
-        const form = document.getElementById('registration-form');
-        if (form) {
-            form.onsubmit = (e) => {
-                e.preventDefault();
-                const nombre = form.nombre.value.trim();
-                const telefono = form.telefono.value.trim();
-                const ciudad = form.ciudad.value.trim();
-                if (!nombre || !telefono || !ciudad) {
-                    showError('Por favor completa todos los campos para iniciar la aventura.');
-                    return;
-                }
-                mostrarEspeciesMenu();
-            };
-        }
-    }, 350);
-}
-
-function mostrarEspeciesMenu() {
-    const especiesBtns = Object.keys(SPECIES_DATA).map(id => {
-        return `<button class="btn" data-path="/reto/paso" data-params='{"id": "${id}"}'>${SPECIES_DATA[id].name}</button>`;
-    }).join('');
-    const content = `
-        <div class="content-card">
-            <h2 class="text-primary-dark text-center mb-20">Selecciona una especie para explorar</h2>
-            <div id="test-buttons" class="grid-buttons">
-                ${especiesBtns}
-                <button class="btn" data-path="/reto/finalizar">Certificado Final</button>
-            </div>
-        </div>
-    `;
-    render(content);
-}

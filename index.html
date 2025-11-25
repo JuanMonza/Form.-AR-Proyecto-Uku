@@ -11,6 +11,7 @@
     <link rel="preload" href="models/Reto_Explorador_optimizado.webp" as="image" type="image/webp">
     <link rel="preload" href="style.css" as="style">
     <link rel="modulepreload" href="main.js">
+    <link rel="modulepreload" href="terms.js">
     
     <!-- DNS prefetch for external resources -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -29,9 +30,80 @@
     <!-- Defer non-critical scripts -->
     <link rel="preconnect" href="https://unpkg.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <style>
+        /* Estilos para la ventana modal de términos */
+        .hidden {
+            display: none !important;
+        }
+
+        #terms-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .terms-modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .terms-modal-content h2 {
+            margin-top: 0;
+        }
+
+        .terms-buttons {
+            margin-top: 20px;
+        }
+
+        .terms-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 10px;
+        }
+
+        #accept-terms-btn {
+            background-color: #4CAF50; /* Verde */
+            color: white;
+        }
+
+        #decline-terms-btn {
+            background-color: #f44336; /* Rojo */
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Ventana Modal de Términos y Condiciones -->
+    <div id="terms-modal-overlay" class="hidden">
+        <div class="terms-modal-content">
+            <h2>Términos y Condiciones</h2>
+            <p>Para continuar y disfrutar de la experiencia de Realidad Aumentada, debes aceptar nuestros términos y condiciones.</p>
+            <div class="terms-buttons">
+                <button id="accept-terms-btn">Acepto</button>
+                <button id="decline-terms-btn">No Acepto</button>
+            </div>
+        </div>
+    </div>
+
     <div id="loader" class="hidden">
         <div class="spinner"></div>
     </div>
@@ -45,11 +117,13 @@
                     <img src="models/Ukumari.webp" alt="Ukumari" class="carousel-logo" loading="lazy">
                     <img src="models/rm.webp" alt="RM" class="carousel-logo" loading="lazy">
                     <img src="models/vive.webp" alt="Vive" class="carousel-logo" loading="lazy">
+                    <img src="models/tropico_blanco.png" alt="tropico_blanco" class="carousel-logo" loading="lazy">
                     <!-- Duplicados para efecto infinito -->
                     <img src="models/jardines.webp" alt="Jardines" class="carousel-logo" loading="lazy">
                     <img src="models/Ukumari.webp" alt="Ukumari" class="carousel-logo" loading="lazy">
                     <img src="models/rm.webp" alt="RM" class="carousel-logo" loading="lazy">
                     <img src="models/vive.webp" alt="Vive" class="carousel-logo" loading="lazy">
+                    <img src="models/tropico_blanco.png" alt="tropico_blanco" class="carousel-logo" loading="lazy">
                 </div>
             </div>
         </header>

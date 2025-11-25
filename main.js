@@ -1,8 +1,12 @@
 // js/main.js
 import { Router } from './router.js';
 import { SessionManager } from './tokenManager.js'; // Now SessionManager
+import { TermsManager } from './terms.js';
 import { Database } from './database.js';
 import * as UI from './ui.js';
+
+// Se inicializa el router en el ámbito superior para que sea accesible en todo el módulo.
+const router = new Router();
 
 // Register Service Worker for caching
 if ('serviceWorker' in navigator) {
@@ -64,8 +68,6 @@ async function downloadCertificate() {
 }
 
 function initializeApp() {
-    const router = new Router();
-
     // Delegación de eventos centralizada para manejar todos los clics de la aplicación
     document.body.addEventListener('click', async e => {
         const navButton = e.target.closest('.btn[data-path]');
@@ -74,6 +76,20 @@ function initializeApp() {
             const params = navButton.dataset.params ? JSON.parse(navButton.dataset.params) : {};
             router.navigate(path, params);
             return;
+        }
+
+        if (e.target.matches('#btn-iniciar-reto')) {
+            try {
+                console.log('✅ Click en "Inicia Tú Reto Ahora" detectado');
+                // 1. Muestra el aviso y espera a que el usuario acepte.
+                await TermsManager.check();
+                console.log('✅ Términos aceptados');
+                // 2. Una vez aceptado, navega al formulario de registro.
+                console.log('✅ Navegando a /reto/iniciar');
+                router.navigate('/reto/iniciar');
+            } catch (error) {
+                console.error("❌ El usuario no aceptó los términos o hubo un error.", error);
+            }
         }
 
         if (e.target.matches('#download-cert-btn')) {
@@ -120,6 +136,7 @@ function initializeApp() {
     // Delegación para el envío del formulario de registro
     document.body.addEventListener('submit', async e => {
         if (e.target.matches('#registration-form')) {
+            console.log('✅ Formulario de registro enviado');
             e.preventDefault();
             await router.processRegistration(e.target);
         }
@@ -135,5 +152,9 @@ function initializeApp() {
     else UI.showTestMenu(); // Menú de simulación por defecto
 }
 
-// Iniciar la aplicación cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', initializeApp);
+// Iniciar la aplicación cuando el DOM esté listo.
+document.addEventListener('DOMContentLoaded', () => {
+    // Mostramos el menú inicial inmediatamente para que el usuario vea el contenido.
+    UI.showTestMenu();
+    initializeApp();
+});

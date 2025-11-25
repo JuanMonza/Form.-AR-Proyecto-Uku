@@ -15,10 +15,13 @@ export class Router {
     }
 
     navigate(path, params = {}) {
+        console.log(`🔄 Navegando a: ${path}`, params);
         const handler = this.routes[path];
         if (handler) {
+            console.log(`✅ Handler encontrado para ${path}`);
             handler(params);
         } else {
+            console.error(`❌ No se encontró handler para ${path}`);
             UI.show404();
         }
     }
@@ -26,10 +29,12 @@ export class Router {
     handleStart() {
         // If a user session already exists, maybe take them to their current step?
         // For now, we just show the registration form as requested.
+        console.log('📋 handleStart() - Mostrando formulario de registro');
         UI.showRegistrationForm();
     }
 
     async processRegistration(form) {
+        console.log('🔄 processRegistration() iniciado');
         const formData = new FormData(form);
         const userData = {
             nombre: formData.get('nombre').trim(),
@@ -37,12 +42,16 @@ export class Router {
             ciudad: formData.get('ciudad').trim()
         };
 
+        console.log('📝 Datos del formulario:', userData);
+
         if (!userData.nombre || !userData.telefono || !userData.ciudad) {
+            console.error('❌ Campos incompletos');
             UI.showError('Por favor completa todos los campos obligatorios.');
             return;
         }
 
         // Attempt to save the user to Supabase
+        console.log('💾 Guardando usuario en Supabase...');
         const { data: newUser, error } = await this.db.saveUser(userData);
 
         if (error) {
@@ -58,7 +67,7 @@ export class Router {
                 if (existingUser) {
                     console.log('✅ Usuario existente encontrado, continuando sesión');
                     SessionManager.saveSession(existingUser.telefono);
-                    UI.showStartMessage(existingUser.nombre_completo);
+                    this.navigate('/reto/paso', { id: '01' }); // Lo enviamos al primer paso
                     return;
                 } else {
                     UI.showError('Este número de teléfono ya está registrado pero no se pudieron recuperar los datos.');
@@ -72,10 +81,11 @@ export class Router {
 
         if (newUser) {
             // Registration successful, save session and show start message
-            console.log('✅ Nuevo usuario registrado exitosamente');
+            console.log('✅ Nuevo usuario registrado exitosamente:', newUser);
             SessionManager.saveSession(newUser.telefono);
             UI.showStartMessage(newUser.nombre_completo);
         } else {
+            console.error('❌ Error: newUser es null');
             UI.showError('Ocurrió un error inesperado durante el registro.');
         }
     }
