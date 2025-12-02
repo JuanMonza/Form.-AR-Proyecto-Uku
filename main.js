@@ -1,22 +1,13 @@
 // js/main.js
 import { Router } from './router.js';
 import { SessionManager } from './tokenManager.js'; // Now SessionManager
-import { TermsManager } from './terms.js';
 import { Database } from './database.js';
 import * as UI from './ui.js';
 
-// Se inicializa el router en el ámbito superior para que sea accesible en todo el módulo.
-const router = new Router();
-
-// Register Service Worker for caching
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {
-            // Service worker registration failed, continue without it
-        });
-    });
-}
-
+/**
+ * Genera y descarga un certificado en PDF usando una plantilla existente.
+ * Carga un PDF, estampa el nombre del usuario y lo guarda.
+ */
 async function downloadCertificate() {
     const telefono = SessionManager.getSession();
     if (!telefono) {
@@ -32,108 +23,82 @@ async function downloadCertificate() {
         return;
     }
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    // Verificación profesional: Asegurarse de que la librería PDF esté cargada
+    if (typeof window.PDFLib === 'undefined') {
+        console.error('❌ PDFLib no está cargado. No se puede generar el certificado.');
+        alert('La función para generar certificados no está lista. Por favor, recarga la página e inténtalo de nuevo.');
+        // Opcional: Deshabilitar el botón para evitar más clics
+        document.getElementById('download-cert-btn')?.setAttribute('disabled', 'true');
+        return;
+    }
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(24);
-    doc.setTextColor(45, 80, 22); // --primary-dark-green
-    doc.text('Certificado de Explorador Extinción', 105, 40, { align: 'center' });
+    try {
+        // --- PASO 1: Cargar la plantilla PDF ---
+        const urlPlantilla = 'models/Expedition_Certicate_explorer_Completion_Certificate_A4.pdf'; // Asegúrate que esta ruta es correcta
+        const existingPdfBytes = await fetch(urlPlantilla).then(res => res.arrayBuffer());
 
-    doc.setFontSize(16);
-    doc.setTextColor(74, 124, 89); // --primary-green
-    doc.text('Bioparque Ukumarí', 105, 55, { align: 'center' });
+        // --- PASO 2: Cargar el documento con pdf-lib ---
+        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
 
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    const mainText = `Se otorga a ${user.nombre_completo} por completar con éxito el Reto de Explorador Extinción del Bioparque Ukumarí.`;
-    const splitText = doc.splitTextToSize(mainText, 160);
-    doc.text(splitText, 105, 100, { align: 'center' });
+        // Cargar una fuente estándar (puedes cargar fuentes .ttf también)
+        const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.text('Especies Extintas Descubiertas:', 105, 140, { align: 'center' });
+        // --- PASO 3: "Estampar" el nombre en la primera página ---
+        const pages = pdfDoc.getPages();
+        const firstPage = pages[0];
+        const { width, height } = firstPage.getSize(); // Obtiene el tamaño de la página (A4 es aprox. 595x842 puntos)
 
-    doc.setFont('helvetica', 'normal');
-    doc.text('Mamut Lanudo (Mammuthus primigenius)', 105, 155, { align: 'center' });
-    doc.text('Tigre de Tasmania (Thylacinus cynocephalus)', 105, 165, { align: 'center' });
-    doc.text('Dodo (Raphus cucullatus)', 105, 175, { align: 'center' });
+        const nombre = user.nombre_completo;
+        const fontSize = 30; // Tamaño de fuente (ajústalo si es necesario)
 
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(10);
-    doc.text(`Fecha: ${new Date().toLocaleDateString('es-CO')}`, 105, 200, { align: 'center' });
+        // --- AJUSTE DE COORDENADAS (X, Y) ---
+        // El origen (0,0) es la esquina INFERIOR IZQUIERDA.
+        // Deberás ajustar 'x' e 'y' para centrar el nombre en la línea de tu PDF.
+        const textWidth = helveticaFont.widthOfTextAtSize(nombre, fontSize);
+        const x = (width - textWidth) / 2; // Centrado horizontal
+        const y = height / 2 + 30;         // Aproximadamente en el centro vertical (¡AJUSTAR!)
 
-    doc.save(`Certificado_Explorador_Extincion_${user.nombre_completo.replace(/\s+/g, '_')}.pdf`);
+        firstPage.drawText(nombre, {
+            x: x,
+            y: y,
+            font: helveticaFont,
+            size: fontSize,
+            color: rgb(0.1, 0.1, 0.1), // Color casi negro
+        });
+
+        // --- PASO 4: Guardar el PDF y preparar la descarga ---
+        const pdfBytes = await pdfDoc.save();
+
+        // Crear un Blob y una URL para descargar el archivo
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `Certificado_${user.nombre_completo.replace(/\s+/g, '_')}.pdf`;
+        link.click();
+
+    } catch (error) {
+        console.error('❌ Error al generar el certificado PDF:', error);
+        alert('Hubo un problema al generar tu certificado. Por favor, inténtalo de nuevo.');
+    }
 }
 
+// Variable para asegurar que la inicialización principal solo ocurra una vez.
+let isAppInitialized = false;
+
+/**
+ * Inicializa el router y los manejadores de eventos principales de la aplicación.
+ * Esta función se llama DESPUÉS de que el usuario interactúa por primera vez.
+ */
 function initializeApp() {
-    // Delegación de eventos centralizada para manejar todos los clics de la aplicación
-    document.body.addEventListener('click', async e => {
-        const navButton = e.target.closest('.btn[data-path]');
-        if (navButton) {
-            const path = navButton.dataset.path;
-            const params = navButton.dataset.params ? JSON.parse(navButton.dataset.params) : {};
-            router.navigate(path, params);
-            return;
-        }
+    if (isAppInitialized) return; // Prevenir doble inicialización
+    isAppInitialized = true;
 
-        if (e.target.matches('#btn-iniciar-reto')) {
-            try {
-                console.log('✅ Click en "Inicia Tú Reto Ahora" detectado');
-                // 1. Muestra el aviso y espera a que el usuario acepte.
-                await TermsManager.check();
-                console.log('✅ Términos aceptados');
-                // 2. Una vez aceptado, navega al formulario de registro.
-                console.log('✅ Navegando a /reto/iniciar');
-                router.navigate('/reto/iniciar');
-            } catch (error) {
-                console.error("❌ El usuario no aceptó los términos o hubo un error.", error);
-            }
-        }
+    console.log('🚀 Inicializando la aplicación principal...');
 
-        if (e.target.matches('#download-cert-btn')) {
-            await downloadCertificate();
-            return;
-        }
+    const router = new Router();
 
-        if (e.target.matches('#go-to-register-btn') || e.target.matches('#go-to-home-btn')) {
-            router.navigate('/reto/iniciar');
-            return;
-        }
-
-        if (e.target.matches('#ar-screenshot-button')) {
-            const modelViewer = document.querySelector('model-viewer');
-            if (modelViewer && modelViewer.arActive) {
-                try {
-                    const dataUrl = await modelViewer.screenshot();
-                    const img = document.createElement('img');
-                    img.src = dataUrl;
-                    img.style.width = '200px';
-                    img.style.position = 'fixed';
-                    img.style.top = '10px';
-                    img.style.left = '10px';
-                    img.style.zIndex = '9999';
-                    document.body.appendChild(img);
-                    
-                    const a = document.createElement('a');
-                    a.href = dataUrl;
-                    a.download = 'captura-ar.png';
-                    a.click();
-
-                    setTimeout(() => img.remove(), 5000);
-                } catch (error) {
-                    console.error('Error taking screenshot:', error);
-                    alert('Error al tomar la captura de pantalla.');
-                }
-            } else if (modelViewer) {
-                alert('Debes estar en modo AR para tomar una foto.');
-            }
-            return;
-        }
-    });
-
-    // Delegación para el envío del formulario de registro
+    // Delegación de eventos para el envío del formulario
     document.body.addEventListener('submit', async e => {
         if (e.target.matches('#registration-form')) {
             console.log('✅ Formulario de registro enviado');
@@ -142,19 +107,64 @@ function initializeApp() {
         }
     });
 
+    // Delegación de eventos para todos los clics
+    document.body.addEventListener('click', async e => {
+        const target = e.target;
+
+        // Botones de navegación con data-path
+        const navButton = target.closest('.btn[data-path]');
+        if (navButton) {
+            const path = navButton.dataset.path;
+            const params = navButton.dataset.params ? JSON.parse(navButton.dataset.params) : {};
+            router.navigate(path, params);
+            return;
+        }
+
+        // Botón de descarga de certificado
+        if (target.matches('#download-cert-btn')) {
+            await downloadCertificate();
+            return;
+        }
+
+        // Botones para volver al inicio/registro
+        if (target.matches('#go-to-register-btn') || target.matches('#go-to-home-btn')) {
+            router.navigate('/reto/iniciar');
+            return;
+        }
+    });
+
+    // Manejo de la URL inicial para navegación directa
     const urlParams = new URLSearchParams(window.location.search);
     const qrType = urlParams.get('qr');
     const stepId = urlParams.get('id');
 
-    if (qrType === 'inicio') router.navigate('/reto/iniciar');
-    else if (qrType === 'paso' && stepId) router.navigate('/reto/paso', { id: stepId });
-    else if (qrType === 'final') router.navigate('/reto/finalizar');
-    else UI.showTestMenu(); // Menú de simulación por defecto
+    if (qrType === 'inicio') {
+        router.navigate('/reto/iniciar');
+    } else if (qrType === 'paso' && stepId) {
+        router.navigate('/reto/paso', { id: stepId });
+    } else if (qrType === 'final') {
+        router.navigate('/reto/finalizar');
+    } else {
+        // Si no hay parámetros QR, mostramos el formulario de registro directamente.
+        router.navigate('/reto/iniciar');
+    }
 }
 
 // Iniciar la aplicación cuando el DOM esté listo.
 document.addEventListener('DOMContentLoaded', () => {
-    // Mostramos el menú inicial inmediatamente para que el usuario vea el contenido.
+    // 1. Mostramos la pantalla de bienvenida/inicio.
     UI.showTestMenu();
-    initializeApp();
+
+    // 2. Escuchamos SOLO el clic en el botón de inicio.
+    document.body.addEventListener('click', async function handleInitialClick(e) {
+        if (e.target.matches('#btn-iniciar-reto')) {
+            // Una vez que se hace clic, ya no necesitamos este listener.
+            document.body.removeEventListener('click', handleInitialClick);
+
+            console.log('✅ Click en "Inicia Tú Reto Ahora" detectado');
+            
+            // 3. Ahora que el usuario ha interactuado, inicializamos el resto de la app.
+            initializeApp();
+        }
+    });
 });
