@@ -80,10 +80,10 @@ export class Router {
         }
 
         if (newUser) {
-            // Registration successful, save session and show start message
+            // Registration successful, save session and go directly to first species
             console.log('✅ Nuevo usuario registrado exitosamente:', newUser);
             SessionManager.saveSession(newUser.telefono);
-            UI.showStartMessage(newUser.nombre_completo);
+            this.navigate('/reto/paso', { id: '01' }); // Ir directo a la primera especie
         } else {
             console.error('❌ Error: newUser es null');
             UI.showError('Ocurrió un error inesperado durante el registro.');
