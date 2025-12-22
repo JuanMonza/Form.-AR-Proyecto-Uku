@@ -13,6 +13,7 @@ supabaseClient.js
 config.js
 credentials.json
 secrets.json
+README-DATABASE.md
 
 # Respaldos de configuración sensible
 *.backup
