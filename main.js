@@ -128,11 +128,13 @@ function initializeApp() {
         if (target.matches('#share-whatsapp-btn')) {
             // Primero descargar el certificado
             await downloadCertificate();
+            // Mostrar instrucción al usuario
+            alert('✅ Certificado descargado. Ahora adjúntalo en WhatsApp.');
             // Esperar un momento y luego abrir WhatsApp
             setTimeout(() => {
-                const message = '¡Completé el Reto de Explorador Extinción en el Bioparque Ukumarí! Descubrí 10 especies y gané mi certificado. ¡Una experiencia increíble!';
+                const message = '¡Completé el Reto de Explorador Extinción en el Bioparque Ukumarí! 🎉\n\nDescubrí 10 especies extintas y gané mi certificado. 📜\n\n¡Una experiencia increíble de Realidad Aumentada en el Bioparque! 🦣🐯🦏';
                 window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-            }, 1000);
+            }, 500);
             return;
         }
 
