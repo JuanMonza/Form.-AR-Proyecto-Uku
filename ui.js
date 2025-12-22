@@ -7,13 +7,14 @@ const loader = document.getElementById('loader');
 export const SPECIES_DATA = {
     '01': { name: 'Mamut Lanudo', model: 'mamut+modelo+3d.glb', facts: ['Vivieron durante la Era de Hielo.', 'Podían medir hasta 4 metros de altura.', 'Su pelaje los protegía de temperaturas de -40°C.'] },
     '02': { name: 'Tigre de Tasmania', model: 'tigre+tasmania+3d+model.glb', facts: ['Era el marsupial carnívoro más grande.', 'Podía abrir su mandíbula hasta 120 grados.', 'El último ejemplar murió en un zoológico en 1936.'] },
-    '03': { name: 'Rinoceronte Del Negro', model: 'rhinoceros+3d+model.glb', facts: ['Especie antigua de la familia del rinoceronte.', 'Adaptado a climas fríos.', 'Pariente de los rinocerontes de Java y Sumatra.'] },
-    '04': { name: 'Vaca Marina de Steller', model: 'manatee+3d+model.glb', facts: ['Mamífero marino herbívoro.', 'También conocido como "vaca marina".', 'Su pariente más cercano es el elefante.'] },
-    '05': { name: 'Pato', model: 'mallard+duck+3d+model.glb', facts: ['Ancestro de la mayoría de los patos domésticos.', 'Se encuentra en todo el hemisferio norte.', 'Los machos tienen una cabeza verde brillante distintiva.'] },
-    '06': { name: 'Foca', model: 'seal+3d+model.glb', facts: ['Mamífero marino carnívoro.', 'Excelentes nadadores.', 'Pueden dormir bajo el agua.'] },
-    '07': { name: 'Rana Dorada', model: 'orange+frog+3d+model.glb', facts: ['Anfibio de colores brillantes.', 'Su piel a menudo indica que es venenosa.', 'Ponen sus huevos en el agua.'] },
+    '03': { name: 'Rinoceronte Del Negro', model: 'rhinoceros+3d+model.glb', facts: ['Habitaba la sabana del centro-oeste de África.', 'Media hasta 3.8m de largo.', 'Su extinción se le atribuye a la caza.'] },
+    '04': { name: 'Vaca Marina de Steller', model: 'manatee+3d+model.glb', facts: ['Median hasta 8 metros de longitud.', 'También conocido como "vaca marina".', 'Pesaban entre 4 y 10 toneladas.', 'Fue cazada hasta su extinción por los marineros'] },
+    '05': { name: 'Pato', model: 'mallard+duck+3d+model.glb', facts: ['Habitó las montañas andinas de Colombia.', 'Vivía en lagunas y pantanos.', 'Su extinción se atribuye a la contaminación de las lagunas.', 'No podia Volar', 'Media 1 metro de altura.'] },
+    '06': { name: 'Foca', model: 'seal+3d+model.glb', facts: ['Median entre 2.20m - 2.40m de largo.', 'Sus únicos depredadores eran los tiburones.', 'Era cazada por su piel y grasa.'] },
+    '07': { name: 'Rana Dorada', model: 'orange+frog+3d+model.glb', facts: ['Habitó en el bosque de Monteverde,  Costa Rica.', 'Su piel era lustrosa y brillante.', 'Se cree que vivían bajo tierra.'] },
     '08': { name: 'Pájaro', model: 'small+bird+3d+model.glb', facts: ['Ave pequeña y ágil.', 'Existen miles de especies en todo el mundo.', 'Algunos pueden imitar sonidos.'] },
-    '09': { name: 'Dodo', model: '3d+model+Dodo+Bird.glb', facts: ['Vivía únicamente en la isla de Mauricio.', 'No podía volar.', 'Se extinguió por la caza y especies invasoras.'] }
+    '09': { name: 'Dodo', model: '3d+model+Dodo+Bird.glb', facts: ['Era endémico de las Islas Marinas de Mauricio .', 'No podía volar.', 'Habitó en bosques y matorrales.', 'Su extinción se le atribuye a la introducción de la serpiente Boiga irregularis'] },
+    '10': { name:'Delfin', model: 'dolphin+3d+model.glb', facts: ['Declarado extinto en 2006 tras una expedición sin resultados.', 'La represa de las Tres Gargantas contribuyó a la pérdida de su hábitat.', 'Endémico del río Yangtsé, China.','Su extinción se atribuye principalmente a la acción humana.'] }
 };
 
 const TOTAL_SPECIES = Object.keys(SPECIES_DATA).length;
@@ -95,7 +96,7 @@ export function showSpeciesContent(speciesId) {
             <div class="info-box info-box-next-mission-alt">
                 <h3 class="info-box-title">Siguiente Objetivo:</h3>
                 <p class="text-dark">
-                    Busca el <strong>QR de ${nextSpecies.name}</strong>.
+                    Busca la <strong>siguiente especie</strong> y consigue tu certificado.
                 </p>
             </div>
             <button class="btn" data-path="/reto/paso" data-params='{"id": "${('0' + nextStep).slice(-2)}"}'>Continuar Búsqueda</button>
@@ -116,6 +117,7 @@ export function showSpeciesContent(speciesId) {
         if (speciesId === '07') imageName = 'Rana';
         if (speciesId === '08') imageName = 'Anteojito';
         if (speciesId === '09') imageName = 'Dodo';
+        if (speciesId === '10') imageName = 'Delfin_chino_de_rio';
 
     const content = `
         <div class="content-card">
@@ -123,7 +125,7 @@ export function showSpeciesContent(speciesId) {
                 <img src="models/${imageName}.webp" alt="${species.name}" class="species-title" style="display:block;margin:0 auto 20px auto;max-width:300px;width:100%;">
                 ${createModelViewer(species)}
                 <div class="info-box">
-                    <h3 class="info-box-title">📚 Datos:</h3>
+                    <h3 class="info-box-title">Datos:</h3>
                     <ul class="info-list">
                         ${species.facts.map(fact => `<li>${fact}</li>`).join('')}
                     </ul>
