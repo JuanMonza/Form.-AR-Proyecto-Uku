@@ -3,7 +3,7 @@
 # ============================================
 
 # ============================================
-# 🔐 ARCHIVOS CON INFORMACIÓN SENSIBLE
+# ARCHIVOS CON INFORMACIÓN SENSIBLE
 # ============================================
 # NUNCA subir estos archivos a GitHub
 .env
@@ -20,7 +20,7 @@ secrets.json
 *-backup.*
 
 # ============================================
-# 📁 CARPETAS DEL SISTEMA OPERATIVO
+# CARPETAS DEL SISTEMA OPERATIVO
 # ============================================
 
 # Windows
@@ -41,7 +41,7 @@ $RECYCLE.BIN/
 .directory
 
 # ============================================
-# 💻 EDITORES E IDEs
+# EDITORES E IDEs
 # ============================================
 
 # Visual Studio Code
@@ -63,7 +63,7 @@ $RECYCLE.BIN/
 *~
 
 # ============================================
-# 📦 NODE MODULES Y DEPENDENCIAS
+# NODE MODULES Y DEPENDENCIAS
 # ============================================
 node_modules/
 npm-debug.log*
@@ -73,7 +73,7 @@ package-lock.json
 yarn.lock
 
 # ============================================
-# 🗂️ ARCHIVOS TEMPORALES Y LOGS
+# ARCHIVOS TEMPORALES Y LOGS
 # ============================================
 *.log
 logs/
@@ -82,7 +82,7 @@ logs/
 temp/
 
 # ============================================
-# 🚀 ARCHIVOS DE BUILD Y DESPLIEGUE
+# ARCHIVOS DE BUILD Y DESPLIEGUE
 # ============================================
 dist/
 build/
@@ -90,7 +90,7 @@ build/
 .parcel-cache/
 
 # ============================================
-# 📊 BASES DE DATOS LOCALES
+# BASES DE DATOS LOCALES
 # ============================================
 *.sqlite
 *.sqlite3
@@ -98,7 +98,7 @@ build/
 *.sql.backup
 
 # ============================================
-# 🔒 CERTIFICADOS Y CLAVES
+# CERTIFICADOS Y CLAVES
 # ============================================
 *.pem
 *.key
@@ -108,21 +108,21 @@ ssl/
 certificates/
 
 # ============================================
-# 📄 DOCUMENTOS SENSIBLES
+# DOCUMENTOS SENSIBLES
 # ============================================
 documentos-privados/
 respaldos/
 datos-sensibles/
 
 # ============================================
-# 🧪 TESTING
+# TESTING
 # ============================================
 coverage/
 .nyc_output/
 test-results/
 
 # ============================================
-# ✅ ARCHIVOS QUE SÍ DEBEN INCLUIRSE
+# ARCHIVOS QUE SÍ DEBEN INCLUIRSE
 # ============================================
 # Los siguientes archivos NO están en gitignore:
 # - index.html

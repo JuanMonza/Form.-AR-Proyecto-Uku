@@ -1,6 +1,6 @@
-# 🗄️ Guía de Base de Datos - Bioparque Ukumarí AR
+Guía de Base de Datos - Bioparque Ukumarí AR
 
-## 📋 Tabla de Contenidos
+Tabla de Contenidos
 
 1. [Estructura de la Base de Datos](#estructura)
 2. [Reiniciar la Base de Datos](#reiniciar)
@@ -10,9 +10,9 @@
 
 ---
 
-## 🏗️ Estructura de la Base de Datos {#estructura}
+Estructura de la Base de Datos {#estructura}
 
-### Tabla: `exploradores`
+Tabla: `exploradores`
 
 | Campo            | Tipo      | Descripción                                    | Constraints                    |
 |------------------|-----------|------------------------------------------------|--------------------------------|
@@ -42,9 +42,9 @@
 
 ---
 
-## 🔄 Reiniciar la Base de Datos {#reiniciar}
+Reiniciar la Base de Datos {#reiniciar}
 
-### Opción 1: Usando Supabase Dashboard (Recomendado)
+Opción 1: Usando Supabase Dashboard (Recomendado)
 
 1. Ve a tu proyecto en [Supabase](https://app.supabase.com)
 2. Navega a **SQL Editor** en el menú lateral
@@ -52,7 +52,7 @@
 4. Haz clic en **Run** (▶️)
 5. Verifica el mensaje de éxito
 
-### Opción 2: Usando Supabase CLI
+Usando Supabase CLI
 
 ```bash
 # Instalar Supabase CLI (si no lo tienes)
@@ -62,7 +62,7 @@ npm install -g supabase
 supabase db reset --db-url "postgresql://usuario:password@host:puerto/database"
 ```
 
-### ⚠️ ADVERTENCIA
+ADVERTENCIA
 
 **Este proceso ELIMINA TODOS LOS DATOS EXISTENTES**. Solo úsalo cuando:
 - Necesites empezar desde cero
@@ -76,32 +76,31 @@ supabase db reset --db-url "postgresql://usuario:password@host:puerto/database"
 
 ---
 
-## 🔐 Seguridad y Configuración {#seguridad}
+Seguridad y Configuración {#seguridad}
 
-### Configuración Inicial
-
-#### 1. Crear archivo de credenciales (PRIMERA VEZ)
+Configuración Inicial
+1. Crear archivo de credenciales (PRIMERA VEZ)
 
 ```bash
 # Copiar plantilla de ejemplo
 cp supabaseClient.example.js supabaseClient.js
 ```
 
-#### 2. Obtener credenciales de Supabase
+2. Obtener credenciales de Supabase
 
 1. Ve a tu proyecto: https://app.supabase.com/project/_/settings/api
 2. Copia:
    - **Project URL** (supabaseUrl)
    - **anon/public key** (supabaseKey)
 
-#### 3. Editar `supabaseClient.js`
+3. Editar `supabaseClient.js`
 
 ```javascript
 const supabaseUrl = 'https://tu-proyecto-real.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5c... tu clave completa aquí';
 ```
 
-### ✅ Verificar .gitignore
+Verificar .gitignore
 
 Asegúrate de que `.gitignore` incluye:
 ```
@@ -111,14 +110,14 @@ supabaseClient.js
 config.js
 ```
 
-### 🔒 Row Level Security (RLS)
+Row Level Security (RLS)
 
 El script `reset-database.sql` configura automáticamente:
 
-- ✅ Lectura pública (SELECT)
-- ✅ Inserción pública (INSERT)
-- ✅ Actualización pública (UPDATE)
-- ❌ Eliminación (DELETE) - requiere autenticación
+- Lectura pública (SELECT)
+- Inserción pública (INSERT)
+- Actualización pública (UPDATE)
+- Eliminación (DELETE) - requiere autenticación
 
 **Para modificar políticas:**
 ```sql
@@ -135,9 +134,8 @@ CREATE POLICY "Actualización restringida"
 
 ---
 
-## 🔍 Consultas Útiles {#consultas}
-
-### Consultas Básicas
+Consultas Útiles {#consultas}
+Consultas Básicas
 
 ```sql
 -- Ver todos los exploradores
@@ -158,7 +156,7 @@ SELECT * FROM exploradores WHERE telefono = '3001234567';
 SELECT * FROM exploradores WHERE ciudad ILIKE '%pereira%';
 ```
 
-### Consultas de Progreso
+Consultas de Progreso
 
 ```sql
 -- Exploradores que completaron todas las especies
@@ -210,7 +208,7 @@ FROM exploradores
 ORDER BY especies_completadas DESC;
 ```
 
-### Consultas de Administración
+Consultas de Administración
 
 ```sql
 -- Respaldo de datos (exportar como CSV)
@@ -230,9 +228,9 @@ AND a.telefono = b.telefono;
 
 ---
 
-## 🔧 Solución de Problemas {#problemas}
+Solución de Problemas {#problemas}
 
-### Error: "relation 'exploradores' does not exist"
+Error: "relation 'exploradores' does not exist"
 
 **Causa:** La tabla no ha sido creada.
 
@@ -241,7 +239,7 @@ AND a.telefono = b.telefono;
 -- Ejecutar reset-database.sql completo en Supabase SQL Editor
 ```
 
-### Error: "duplicate key value violates unique constraint"
+Error: "duplicate key value violates unique constraint"
 
 **Causa:** Intentando insertar un teléfono que ya existe.
 
@@ -255,7 +253,7 @@ if (existingUser) {
 }
 ```
 
-### Error: "new row violates row-level security policy"
+Error: "new row violates row-level security policy"
 
 **Causa:** Las políticas de RLS están bloqueando la operación.
 
@@ -267,7 +265,7 @@ SELECT * FROM pg_policies WHERE tablename = 'exploradores';
 -- Volver a crear políticas con reset-database.sql
 ```
 
-### Error: "column 'QR_11_Completado' does not exist"
+Error: "column 'QR_11_Completado' does not exist"
 
 **Causa:** Intentando acceder a una especie que no existe en el progreso.
 
@@ -280,7 +278,7 @@ for (let i = 1; i <= 10; i++) { // Cambiar de 9 a 10 (o el número correcto)
 }
 ```
 
-### Conexión muy lenta
+Conexión muy lenta
 
 **Posibles causas:**
 1. Red lenta o inestable
@@ -302,7 +300,7 @@ EXPLAIN ANALYZE SELECT * FROM exploradores WHERE telefono = '3001234567';
 
 ---
 
-## 📞 Soporte
+Soporte
 
 Si tienes problemas:
 
@@ -313,7 +311,7 @@ Si tienes problemas:
 
 ---
 
-## 📝 Checklist de Seguridad
+Checklist de Seguridad
 
 Antes de desplegar a producción:
 
