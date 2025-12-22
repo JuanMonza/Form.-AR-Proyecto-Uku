@@ -152,23 +152,32 @@ function initializeApp() {
 
 // Iniciar la aplicación cuando el DOM esté listo.
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('🔵 DOM Loaded - Iniciando aplicación');
+    
     // 1. Mostramos la pantalla de bienvenida/inicio.
     UI.showTestMenu();
 
-    // 2. Escuchamos SOLO el clic en el botón de inicio con delegación de eventos.
+    // 2. Escuchamos clics en todo el documento
     setTimeout(() => {
-        document.body.addEventListener('click', async function handleInitialClick(e) {
-            // Verificar si el clic fue en el botón o dentro de él
+        console.log('🔵 Event listener registrado');
+        
+        document.addEventListener('click', function handleClick(e) {
+            console.log('🔵 Click detectado en:', e.target);
+            
+            // Buscar el botón en el elemento clickeado o sus padres
             const button = e.target.closest('#btn-iniciar-reto');
+            
             if (button) {
-                // Una vez que se hace clic, ya no necesitamos este listener.
-                document.body.removeEventListener('click', handleInitialClick);
-
-                console.log('✅ Click en "Inicia Tú Reto Ahora" detectado');
+                console.log('✅ Click en botón de inicio confirmado');
                 
-                // 3. Ahora que el usuario ha interactuado, inicializamos el resto de la app.
+                // Remover el listener
+                document.removeEventListener('click', handleClick);
+                
+                // Inicializar la app
                 initializeApp();
             }
-        });
-    }, 400);
+        }, { once: false });
+        
+        console.log('🔵 Listener agregado exitosamente');
+    }, 500);
 });
