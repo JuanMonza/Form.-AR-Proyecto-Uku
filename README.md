@@ -141,18 +141,6 @@ cd Form.-AR-Proyecto-Uku
 Ejecuta el script SQL en Supabase SQL Editor:
 ```bash
 # El archivo reset-database.sql contiene toda la estructura necesaria
-```
-
-##### 2.3 Configurar Credenciales
-```bash
-# Copiar plantilla de ejemplo
-cp supabaseClient.example.js supabaseClient.js
-
-# Editar supabaseClient.js con tus credenciales
-# Reemplazar:
-# - supabaseUrl con tu URL de proyecto
-# - supabaseKey con tu anon/public key
-```
 
 #### 3. Ejecutar Localmente
 
@@ -425,7 +413,7 @@ credentials.json        # Credenciales generales
 ### Problemas Comunes
 
 #### Error: "No se puede conectar con Supabase"
-**Solución**: Verificar que `supabaseClient.js` tiene las credenciales correctas
+**Solución**: Verificar que tiene las credenciales correctas
 
 #### Los cambios no se reflejan en producción
 **Solución**: Incrementar versión en index.html (`?v=1.4`) y hacer cache clear
@@ -444,11 +432,11 @@ credentials.json        # Credenciales generales
 ```javascript
 // Activar logs en la consola del navegador (F12)
 // Los logs están marcados con emojis para facilitar identificación:
-// - 🔌 Conexión
-// - ✅ Éxito
-// - ❌ Error
-// - 🔄 Procesando
-// - 📝 Guardando
+// - Conexión
+// - Éxito
+// - Error
+// - Procesando
+// - Guardando
 ```
 
 ## Testing
