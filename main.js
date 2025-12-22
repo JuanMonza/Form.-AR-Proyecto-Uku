@@ -155,16 +155,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Mostramos la pantalla de bienvenida/inicio.
     UI.showTestMenu();
 
-    // 2. Escuchamos SOLO el clic en el botón de inicio.
-    document.body.addEventListener('click', async function handleInitialClick(e) {
-        if (e.target.matches('#btn-iniciar-reto')) {
-            // Una vez que se hace clic, ya no necesitamos este listener.
-            document.body.removeEventListener('click', handleInitialClick);
+    // 2. Escuchamos SOLO el clic en el botón de inicio con delegación de eventos.
+    setTimeout(() => {
+        document.body.addEventListener('click', async function handleInitialClick(e) {
+            // Verificar si el clic fue en el botón o dentro de él
+            const button = e.target.closest('#btn-iniciar-reto');
+            if (button) {
+                // Una vez que se hace clic, ya no necesitamos este listener.
+                document.body.removeEventListener('click', handleInitialClick);
 
-            console.log('✅ Click en "Inicia Tú Reto Ahora" detectado');
-            
-            // 3. Ahora que el usuario ha interactuado, inicializamos el resto de la app.
-            initializeApp();
-        }
-    });
+                console.log('✅ Click en "Inicia Tú Reto Ahora" detectado');
+                
+                // 3. Ahora que el usuario ha interactuado, inicializamos el resto de la app.
+                initializeApp();
+            }
+        });
+    }, 400);
 });
