@@ -38,7 +38,7 @@ async function downloadCertificate() {
 
     try {
         // --- PASO 1: Cargar la plantilla PDF ---
-        const urlPlantilla = 'models/Expedition_Certicate_explorer_Completion_Certificate_A4.pdf'; // Asegúrate que esta ruta es correcta
+        const urlPlantilla = 'models/Expedition_Certicate_explorer_ Completion_Certificate_A4.pdf';
         const existingPdfBytes = await fetch(urlPlantilla).then(res => res.arrayBuffer());
 
         // --- PASO 2: Cargar el documento con pdf-lib ---
