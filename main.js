@@ -1,12 +1,8 @@
 // js/main.js
-console.log('🟢 main.js cargado correctamente');
-
 import { Router } from './router.js';
 import { SessionManager } from './tokenManager.js'; // Now SessionManager
 import { Database } from './database.js';
 import * as UI from './ui.js';
-
-console.log('🟢 Todos los módulos importados correctamente');
 
 /**
  * Genera y descarga un certificado en PDF usando una plantilla existente.
@@ -98,8 +94,6 @@ function initializeApp() {
     if (isAppInitialized) return; // Prevenir doble inicialización
     isAppInitialized = true;
 
-    console.log('🚀 Inicializando la aplicación principal...');
-
     const router = new Router();
 
     // Delegación de eventos para el envío del formulario
@@ -168,24 +162,16 @@ function initializeApp() {
 
 // Iniciar la aplicación cuando el DOM esté listo.
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🔵 DOM Loaded - Iniciando aplicación');
-    
     // 1. Mostramos la pantalla de bienvenida/inicio.
     UI.showTestMenu();
 
     // 2. Escuchamos clics en todo el documento
     setTimeout(() => {
-        console.log('🔵 Event listener registrado');
-        
         document.addEventListener('click', function handleClick(e) {
-            console.log('🔵 Click detectado en:', e.target);
-            
             // Buscar el botón en el elemento clickeado o sus padres
             const button = e.target.closest('#btn-iniciar-reto');
             
             if (button) {
-                console.log('✅ Click en botón de inicio confirmado');
-                
                 // Remover el listener
                 document.removeEventListener('click', handleClick);
                 
@@ -193,7 +179,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 initializeApp();
             }
         }, { once: false });
-        
-        console.log('🔵 Listener agregado exitosamente');
     }, 500);
 });
