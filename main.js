@@ -1,8 +1,12 @@
 // js/main.js
+console.log('🟢 main.js cargado correctamente');
+
 import { Router } from './router.js';
 import { SessionManager } from './tokenManager.js'; // Now SessionManager
 import { Database } from './database.js';
 import * as UI from './ui.js';
+
+console.log('🟢 Todos los módulos importados correctamente');
 
 /**
  * Genera y descarga un certificado en PDF usando una plantilla existente.
