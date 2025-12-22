@@ -130,6 +130,18 @@ function initializeApp() {
             return;
         }
 
+        // Botón de compartir en WhatsApp
+        if (target.matches('#share-whatsapp-btn')) {
+            // Primero descargar el certificado
+            await downloadCertificate();
+            // Esperar un momento y luego abrir WhatsApp
+            setTimeout(() => {
+                const message = '¡Completé el Reto de Explorador Extinción en el Bioparque Ukumarí! Descubrí 10 especies y gané mi certificado. ¡Una experiencia increíble!';
+                window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+            }, 1000);
+            return;
+        }
+
         // Botones para volver al inicio/registro
         if (target.matches('#go-to-register-btn') || target.matches('#go-to-home-btn')) {
             router.navigate('/reto/iniciar');

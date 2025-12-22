@@ -335,10 +335,9 @@ export function showDodoAndCertificate(user) {
                 <button id="download-cert-btn" class="btn download-btn">
                     Descargar Certificado
                 </button>
-                <a href="https://wa.me/?text=¡Completé el Reto de Explorador Extinción en el Bioparque Ukumarí! Descubrí ${TOTAL_SPECIES} especies y gané mi certificado. ¡Una experiencia increíble!" 
-                   target="_blank" class="share-btn">
+                <button id="share-whatsapp-btn" class="share-btn" style="background-color: #25d366; border: none; cursor: pointer; text-decoration: none; display: inline-block; padding: 12px 25px; border-radius: 8px; color: white; font-weight: bold;">
                     Compartir en WhatsApp
-                </a>
+                </button>
             </div>
         </div>
     `;
