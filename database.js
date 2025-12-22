@@ -99,9 +99,9 @@ export class Database {
             return { data: null, error: { message: 'Ciudad debe tener al menos 2 caracteres.' } };
         }
 
-        // Initialize progress for all species
+        // Initialize progress for all species (1-10)
         const initialProgress = {};
-        for (let i = 1; i <= 9; i++) {
+        for (let i = 1; i <= 10; i++) {
             const speciesId = `0${i}`.slice(-2);
             initialProgress[`QR_${speciesId}_Completado`] = false;
         }

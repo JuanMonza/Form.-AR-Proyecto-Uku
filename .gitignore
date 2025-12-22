@@ -1,0 +1,138 @@
+# ============================================
+# GITIGNORE - Bioparque Ukumarí AR Project
+# ============================================
+
+# ============================================
+# 🔐 ARCHIVOS CON INFORMACIÓN SENSIBLE
+# ============================================
+# NUNCA subir estos archivos a GitHub
+.env
+.env.local
+.env.production
+supabaseClient.js
+config.js
+credentials.json
+secrets.json
+
+# Respaldos de configuración sensible
+*.backup
+*.bak
+*-backup.*
+
+# ============================================
+# 📁 CARPETAS DEL SISTEMA OPERATIVO
+# ============================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# ============================================
+# 💻 EDITORES E IDEs
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains (WebStorm, PhpStorm, etc.)
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# ============================================
+# 📦 NODE MODULES Y DEPENDENCIAS
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ============================================
+# 🗂️ ARCHIVOS TEMPORALES Y LOGS
+# ============================================
+*.log
+logs/
+*.tmp
+*.temp
+temp/
+
+# ============================================
+# 🚀 ARCHIVOS DE BUILD Y DESPLIEGUE
+# ============================================
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# ============================================
+# 📊 BASES DE DATOS LOCALES
+# ============================================
+*.sqlite
+*.sqlite3
+*.db
+*.sql.backup
+
+# ============================================
+# 🔒 CERTIFICADOS Y CLAVES
+# ============================================
+*.pem
+*.key
+*.cert
+*.crt
+ssl/
+certificates/
+
+# ============================================
+# 📄 DOCUMENTOS SENSIBLES
+# ============================================
+documentos-privados/
+respaldos/
+datos-sensibles/
+
+# ============================================
+# 🧪 TESTING
+# ============================================
+coverage/
+.nyc_output/
+test-results/
+
+# ============================================
+# ✅ ARCHIVOS QUE SÍ DEBEN INCLUIRSE
+# ============================================
+# Los siguientes archivos NO están en gitignore:
+# - index.html
+# - main.js
+# - router.js
+# - ui.js
+# - database.js
+# - style.css
+# - terms.js
+# - tokenManager.js
+# - models/ (carpeta con archivos públicos)
+# - .env.example (plantilla sin datos sensibles)
+# - supabaseClient.example.js (plantilla sin credenciales)
