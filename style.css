@@ -375,11 +375,15 @@ html {
     border-radius: 10px;
     overflow: hidden;
     margin: 20px 0;
+    background: transparent;
 }
 
 model-viewer {
     width: 100%;
     height: 100%;
+    background: transparent !important;
+    --poster-color: transparent !important;
+    --progress-bar-color: transparent !important;
 }
 
 model-viewer::part(default-ar-button) {
@@ -388,10 +392,20 @@ model-viewer::part(default-ar-button) {
 
 /* Forzar transparencia en móviles y modo AR */
 @media (max-width: 768px) {
+    model-viewer {
+        background-color: transparent !important;
+        --poster-color: transparent !important;
+    }
+    
+    .ar-container {
+        background-color: transparent !important;
+    }
 }
 
 /* Estilos específicos para AR Scene Viewer (Android) */
-model-viewer[ar-status="session-started"]
+model-viewer[ar-status="session-started"] {
+    background: transparent !important;
+}
 
 /* Forzar fondo transparente en todas las plataformas AR */
 model-viewer[ar-status="not-presenting"],
