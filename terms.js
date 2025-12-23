@@ -97,8 +97,19 @@ export const TermsManager = {
             };
 
             const onAccept = () => {
-                try { localStorage.setItem('termsAccepted', 'true'); } catch (e) {}
-                if (termsModal.classList) termsModal.classList.add('hidden'); else termsModal.style.display = 'none';
+                try { 
+                    localStorage.setItem('termsAccepted', 'true'); 
+                    console.log('Guardado en localStorage: termsAccepted = true');
+                } catch (e) {
+                    console.error('❌ Error guardando en localStorage:', e);
+                }
+                
+                if (termsModal.classList) {
+                    termsModal.classList.add('hidden');
+                } else {
+                    termsModal.style.display = 'none';
+                }
+                
                 cleanup();
                 console.log('✅ Términos aceptados por el usuario');
                 resolve();
@@ -106,11 +117,16 @@ export const TermsManager = {
 
             const onDecline = () => {
                 console.log('❌ Términos rechazados por el usuario');
-                alert('Debes aceptar los términos y condiciones para poder utilizar la aplicación. La pestaña se cerrará.');
-                try { window.close(); } catch (e) {}
-                document.body.innerHTML = '<h1 style="color:black; text-align:center; margin-top: 50px;">Por favor, cierra esta pestaña.</h1>';
+                cleanup();
+                alert('Debes aceptar los términos y condiciones para poder utilizar la aplicación. La página se recargará.');
+                
+                // Recargar la página en lugar de intentar cerrarla
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
             };
 
+            console.log('Adjuntando event listeners a botones de términos');
             acceptBtn.addEventListener('click', onAccept);
             declineBtn.addEventListener('click', onDecline);
         });

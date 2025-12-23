@@ -63,10 +63,20 @@
             max-width: 400px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             font-family: 'Montserrat', sans-serif;
+            color: #333 !important;
+            position: relative;
+            z-index: 10000;
         }
 
         .terms-modal-content h2 {
             margin-top: 0;
+            color: #2d5016 !important;
+            font-weight: bold;
+        }
+
+        .terms-modal-content p {
+            color: #333 !important;
+            line-height: 1.6;
         }
 
         .terms-buttons {
@@ -74,22 +84,44 @@
         }
 
         .terms-buttons button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             margin: 0 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10001;
+            pointer-events: auto;
+        }
+
+        .terms-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .terms-buttons button:active {
+            transform: translateY(0);
         }
 
         #accept-terms-btn {
-            background-color: #4CAF50; /* Verde */
-            color: white;
+            background-color: #4CAF50 !important; /* Verde */
+            color: white !important;
+        }
+
+        #accept-terms-btn:hover {
+            background-color: #45a049 !important;
         }
 
         #decline-terms-btn {
-            background-color: #f44336; /* Rojo */
-            color: white;
+            background-color: #f44336 !important; /* Rojo */
+            color: white !important;
+        }
+
+        #decline-terms-btn:hover {
+            background-color: #da190b !important;
         }
     </style>
 </head>

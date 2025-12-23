@@ -194,7 +194,7 @@ function setupFooterLinks() {
     // Versión - mostrar información de la versión
     document.getElementById('footer-version')?.addEventListener('click', (e) => {
         e.preventDefault();
-        alert('🚀 Versión 1.3\n\n✅ Sistema de certificados PDF\n✅ 10 especies AR\n✅ WhatsApp share\n✅ Base de datos optimizada');
+        alert('Versión 1.3\n\n✅ Sistema de certificados PDF\n✅ 10 especies AR\n✅ WhatsApp share\n✅ Base de datos optimizada');
     });
 
     // Términos y condiciones
@@ -204,19 +204,48 @@ function setupFooterLinks() {
         const termsModal = document.getElementById('terms-modal-overlay');
         if (termsModal) {
             termsModal.classList.remove('hidden');
+            termsModal.style.display = 'flex';
+            
+            // Asegurar que los botones funcionen
+            const acceptBtn = document.getElementById('accept-terms-btn');
+            const declineBtn = document.getElementById('decline-terms-btn');
+            
+            if (acceptBtn) {
+                // Remover listener anterior si existe
+                acceptBtn.replaceWith(acceptBtn.cloneNode(true));
+                const newAcceptBtn = document.getElementById('accept-terms-btn');
+                
+                newAcceptBtn.addEventListener('click', () => {
+                    console.log('✅ Términos aceptados desde footer');
+                    termsModal.classList.add('hidden');
+                    termsModal.style.display = 'none';
+                });
+            }
+            
+            if (declineBtn) {
+                // Remover listener anterior si existe
+                declineBtn.replaceWith(declineBtn.cloneNode(true));
+                const newDeclineBtn = document.getElementById('decline-terms-btn');
+                
+                newDeclineBtn.addEventListener('click', () => {
+                    console.log('❌ Modal cerrado desde footer');
+                    termsModal.classList.add('hidden');
+                    termsModal.style.display = 'none';
+                });
+            }
         }
     });
 
     // Política de privacidad
     document.getElementById('footer-privacy')?.addEventListener('click', (e) => {
         e.preventDefault();
-        alert('📋 Política de Privacidad\n\nJardines del Renacer - Bioparque Ukumarí\n\nTus datos personales son tratados de forma confidencial y solo se utilizan para mejorar tu experiencia en el parque.\n\nPara más información, contacta con nuestro equipo.');
+        alert('Política de Privacidad\n\nJardines del Renacer - Bioparque Ukumarí\n\nTus datos personales son tratados de forma confidencial segun la ley 1581 de 2012 y solo se utilizan para mejorar tu experiencia en el parque.\n\nPara más información, contacta con nuestro equipo.');
     });
 
     // Cookies
     document.getElementById('footer-cookies')?.addEventListener('click', (e) => {
         e.preventDefault();
-        alert('🍪 Política de Cookies\n\nEsta aplicación utiliza localStorage para guardar tu progreso de forma local en tu dispositivo.\n\nNo utilizamos cookies de terceros ni seguimiento.\n\nPuedes borrar estos datos desde la configuración de tu navegador.');
+        alert('Política de Cookies\n\nEsta aplicación utiliza localStorage para guardar tu progreso de forma local en tu dispositivo.\n\nNo utilizamos cookies de terceros ni seguimiento.\n\nPuedes borrar estos datos desde la configuración de tu navegador.');
     });
 }
 
