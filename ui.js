@@ -50,13 +50,13 @@ function createModelViewer(species) {
             ar-modes="webxr scene-viewer quick-look"
             ar-scale="auto"
             skybox-image=""
-            exposure="1.5"
-            shadow-intensity="0.5"
-            shadow-softness="0.5"
+            exposure="2.0"
+            shadow-intensity="0.3"
+            shadow-softness="0.8"
             environment-image=""
-            tone-mapping="neutral"
+            tone-mapping="commerce"
             poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='transparent'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3ECargando...%3C/text%3E%3C/svg%3E"
-            style="width: 100%; height: 400px; background-color: transparent;">
+            style="width: 100%; height: 400px; background-color: transparent; --background-color: transparent;">
             <button class="btn ar-button" slot="ar-button">Ver en AR</button>
         </model-viewer>
         <div class="info-box-ar-tip" id="ar-tip-box"></div>
@@ -204,6 +204,11 @@ export function showRegistrationForm() {
                     <input type="checkbox" id="age-check" name="age-check">
                     <label for="age-check">Soy mayor de 18 años</label>
                 </div>
+
+                <div class="form-group-checkbox">
+                    <input type="checkbox" id="data-treatment" name="data-treatment">
+                    <label for="data-treatment">Acepto tratamiento de datos</label>
+                </div>
                 
                 <button type="submit" id="submit-registration" class="btn" disabled>
                     Iniciar Misión de Explorador
@@ -217,18 +222,20 @@ export function showRegistrationForm() {
     setTimeout(() => {
         console.log('🔍 Configurando validación del formulario');
         const ageCheck = document.getElementById('age-check');
+        const dataTreatment = document.getElementById('data-treatment');
         const submitBtn = document.getElementById('submit-registration');
         const nombreInput = document.getElementById('nombre');
         const telefonoInput = document.getElementById('telefono');
         const ciudadInput = document.getElementById('ciudad');
 
-        if (!ageCheck || !submitBtn || !nombreInput || !telefonoInput || !ciudadInput) {
+        if (!ageCheck || !dataTreatment || !submitBtn || !nombreInput || !telefonoInput || !ciudadInput) {
             console.error('❌ Error: No se encontraron todos los elementos del formulario');
             return;
         }
 
-        // Asegurar que el checkbox inicia unchecked
+        // Asegurar que los checkboxes inician unchecked
         ageCheck.checked = false;
+        dataTreatment.checked = false;
         submitBtn.disabled = true;
 
         // Función para validar si el formulario está completo
@@ -237,14 +244,22 @@ export function showRegistrationForm() {
                                    telefonoInput.value.trim().length >= 7 && 
                                    ciudadInput.value.trim().length >= 2;
             const ageChecked = ageCheck.checked;
-            const isEnabled = allFieldsFilled && ageChecked;
+            const dataChecked = dataTreatment.checked;
+            const isEnabled = allFieldsFilled && ageChecked && dataChecked;
             submitBtn.disabled = !isEnabled;
-            console.log(`📋 Validación: nombre=${nombreInput.value.trim().length >= 3}, tel=${telefonoInput.value.trim().length >= 7}, ciudad=${ciudadInput.value.trim().length >= 2}, age=${ageChecked}, habilitado=${isEnabled}`);
+            console.log(`📋 Validación: nombre=${nombreInput.value.trim().length >= 3}, tel=${telefonoInput.value.trim().length >= 7}, ciudad=${ciudadInput.value.trim().length >= 2}, age=${ageChecked}, data=${dataChecked}, habilitado=${isEnabled}`);
         };
 
         if (ageCheck) {
             ageCheck.addEventListener('change', () => {
                 console.log('✅ Checkbox de edad cambió a:', ageCheck.checked);
+                validateForm();
+            });
+        }
+
+        if (dataTreatment) {
+            dataTreatment.addEventListener('change', () => {
+                console.log('✅ Checkbox de tratamiento de datos cambió a:', dataTreatment.checked);
                 validateForm();
             });
         }
