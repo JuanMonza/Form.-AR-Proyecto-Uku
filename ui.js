@@ -47,14 +47,16 @@ function createModelViewer(species) {
             auto-rotate 
             camera-controls 
             ar 
-            ar-modes="webxr scene-viewer quick-look"
+            ar-modes="scene-viewer webxr quick-look"
             ar-scale="auto"
-            skybox-image=""
-            exposure="2.0"
-            shadow-intensity="0.3"
-            shadow-softness="0.8"
-            environment-image=""
-            tone-mapping="commerce"
+            skybox-image="neutral"
+            exposure="1.0"
+            shadow-intensity="1"
+            shadow-softness="1"
+            environment-image="neutral"
+            tone-mapping="neutral"
+            reveal="auto"
+            loading="eager"
             poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='transparent'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3ECargando...%3C/text%3E%3C/svg%3E"
             style="width: 100%; height: 400px; background-color: transparent; --background-color: transparent;">
             <button class="btn ar-button" slot="ar-button">Ver en AR</button>
@@ -147,8 +149,8 @@ export function showSpeciesContent(speciesId) {
         const arTipBox = document.getElementById('ar-tip-box');
         if (arTipBox) {
             arTipBox.innerHTML = isAndroid()
-                ? '💡 <strong>Pro Tip:</strong> En Android, usa el botón de captura de pantalla de tu dispositivo mientras ves el animal en AR. El botón "Tomar Foto" puede no estar disponible.'
-                : '💡 <strong>Pro Tip:</strong> En iOS, puedes usar el botón de la app para tomar la foto en AR.';
+                ? '💡 <strong>Android:</strong> Toca "Ver en AR" y permite que Google Chrome o Google abra el visor 3D. Usa los botones de tu dispositivo para capturar fotos en AR.'
+                : '💡 <strong>iOS:</strong> Toca "Ver en AR" para ver el animal en tu espacio. Usa el botón de la app para tomar fotos en AR.';
             // Ocultar el botón en Android si no funciona
             if (isAndroid()) {
                 const btnFoto = document.getElementById('ar-screenshot-button');

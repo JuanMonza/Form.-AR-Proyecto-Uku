@@ -384,10 +384,19 @@ model-viewer {
     background: transparent !important;
     --poster-color: transparent !important;
     --progress-bar-color: transparent !important;
+    --progress-bar-height: 0 !important;
 }
 
 model-viewer::part(default-ar-button) {
     background: transparent;
+}
+
+/* Eliminar cualquier fondo blanco y forzar transparencia total */
+model-viewer,
+model-viewer canvas,
+model-viewer > * {
+    background-color: transparent !important;
+    background: transparent !important;
 }
 
 /* Forzar transparencia en móviles y modo AR */
@@ -398,6 +407,11 @@ model-viewer::part(default-ar-button) {
     }
     
     .ar-container {
+        background-color: transparent !important;
+    }
+    
+    model-viewer canvas {
+        background: transparent !important;
         background-color: transparent !important;
     }
 }
