@@ -47,13 +47,11 @@ function createModelViewer(species) {
             auto-rotate 
             camera-controls 
             ar 
-            ar-modes="scene-viewer webxr quick-look"
+            ar-modes="webxr scene-viewer quick-look"
             ar-scale="auto"
-            skybox-image="neutral"
-            exposure="1.0"
-            shadow-intensity="1"
+            exposure="0.8"
+            shadow-intensity="0.5"
             shadow-softness="1"
-            environment-image="neutral"
             tone-mapping="neutral"
             reveal="auto"
             loading="eager"
@@ -148,13 +146,13 @@ export function showSpeciesContent(speciesId) {
     setTimeout(() => {
         const arTipBox = document.getElementById('ar-tip-box');
         if (arTipBox) {
-            arTipBox.innerHTML = isAndroid()
-                ? '💡 <strong>Android:</strong> Toca "Ver en AR" y permite que Google Chrome o Google abra el visor 3D. Usa los botones de tu dispositivo para capturar fotos en AR.'
-                : '💡 <strong>iOS:</strong> Toca "Ver en AR" para ver el animal en tu espacio. Usa el botón de la app para tomar fotos en AR.';
-            // Ocultar el botón en Android si no funciona
             if (isAndroid()) {
+                arTipBox.innerHTML = '💡 <strong>Android:</strong> Si te pide instalar algo, acepta instalar "Google Play Services for AR" (es gratis). Luego toca "Ver en AR" nuevamente para ver el animal en tu espacio real. ¡Toma fotos con el botón de cámara de tu teléfono!';
+                // Ocultar el botón de foto en Android
                 const btnFoto = document.getElementById('ar-screenshot-button');
                 if (btnFoto) btnFoto.style.display = 'none';
+            } else {
+                arTipBox.innerHTML = '💡 <strong>iOS:</strong> Toca "Ver en AR" para ver el animal en tu espacio. ¡La cámara se abrirá automáticamente! Usa el botón blanco para tomar fotos.';
             }
         }
     }, 350);
