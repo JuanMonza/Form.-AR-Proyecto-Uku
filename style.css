@@ -375,57 +375,11 @@ html {
     border-radius: 10px;
     overflow: hidden;
     margin: 20px 0;
-    background: transparent;
 }
 
 model-viewer {
     width: 100%;
     height: 100%;
-    background: transparent !important;
-    --poster-color: transparent !important;
-    --progress-bar-color: transparent !important;
-    --progress-bar-height: 0 !important;
-}
-
-model-viewer::part(default-ar-button) {
-    background: transparent;
-}
-
-/* Eliminar cualquier fondo blanco y forzar transparencia total */
-model-viewer,
-model-viewer canvas,
-model-viewer > * {
-    background-color: transparent !important;
-    background: transparent !important;
-}
-
-/* Forzar transparencia en móviles y modo AR */
-@media (max-width: 768px) {
-    model-viewer {
-        background-color: transparent !important;
-        --poster-color: transparent !important;
-    }
-    
-    .ar-container {
-        background-color: transparent !important;
-    }
-    
-    model-viewer canvas {
-        background: transparent !important;
-        background-color: transparent !important;
-    }
-}
-
-/* Estilos específicos para AR Scene Viewer (Android) */
-model-viewer[ar-status="session-started"] {
-    background: transparent !important;
-}
-
-/* Forzar fondo transparente en todas las plataformas AR */
-model-viewer[ar-status="not-presenting"],
-model-viewer[ar-status="session-started"],
-model-viewer[ar-status="object-placed"] {
-    background-color: transparent !important;
 }
 
 .certificate {

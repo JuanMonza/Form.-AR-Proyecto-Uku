@@ -165,32 +165,32 @@ export function showRegistrationForm() {
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
                     <input type="text" id="nombre" name="nombre" required 
-                           placeholder="Ingresa tu nombre completo"
-                           minlength="3"
-                           maxlength="100"
-                           autocomplete="name"
-                           title="Ingresa tu nombre completo">
+                    placeholder="Ingresa tu nombre completo"
+                    minlength="3"
+                    maxlength="100"
+                    autocomplete="name"
+                    title="Ingresa tu nombre completo">
                 </div>
                 
                 <div class="form-group">
                     <label for="telefono">Número de Teléfono</label>
                     <input type="tel" id="telefono" name="telefono" required 
-                           placeholder="Ej: 3001234567"
-                           minlength="7"
-                           maxlength="10"
-                           autocomplete="tel"
-                           inputmode="numeric"
-                           title="Solo se permiten números (7-10 dígitos)">
+                    placeholder="Ej: 3001234567"
+                    minlength="7"
+                    maxlength="10"
+                    autocomplete="tel"
+                    nputmode="numeric"
+                    title="Solo se permiten números (7-10 dígitos)">
                 </div>
                 
                 <div class="form-group">
                     <label for="ciudad">Ciudad</label>
                     <input type="text" id="ciudad" name="ciudad" required 
-                           placeholder="Ingresa tu ciudad"
-                           minlength="2"
-                           maxlength="50"
-                           autocomplete="address-level2"
-                           title="Ingresa tu ciudad">
+                    placeholder="Ingresa tu ciudad"
+                    minlength="2"
+                    maxlength="50"
+                    autocomplete="address-level2"
+                    title="Ingresa tu ciudad">
                 </div>
 
                 <div class="form-group-checkbox">
@@ -234,8 +234,8 @@ export function showRegistrationForm() {
         // Función para validar si el formulario está completo
         const validateForm = () => {
             const allFieldsFilled = nombreInput.value.trim().length >= 3 && 
-                                   telefonoInput.value.trim().length >= 7 && 
-                                   ciudadInput.value.trim().length >= 2;
+                                    telefonoInput.value.trim().length >= 7 && 
+                                    ciudadInput.value.trim().length >= 2;
             const ageChecked = ageCheck.checked;
             const dataChecked = dataTreatment.checked;
             const isEnabled = allFieldsFilled && ageChecked && dataChecked;
