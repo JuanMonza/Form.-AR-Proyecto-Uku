@@ -49,14 +49,7 @@ function createModelViewer(species) {
             ar 
             ar-modes="webxr scene-viewer quick-look"
             ar-scale="auto"
-            exposure="0.8"
-            shadow-intensity="0.5"
-            shadow-softness="1"
-            tone-mapping="neutral"
-            reveal="auto"
-            loading="eager"
-            poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200'%3E%3Crect width='100%25' height='100%25' fill='transparent'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-family='Arial' font-size='16' fill='%23666'%3ECargando...%3C/text%3E%3C/svg%3E"
-            style="width: 100%; height: 400px; background-color: transparent; --background-color: transparent;">
+            style="width: 100%; height: 400px;">
             <button class="btn ar-button" slot="ar-button">Ver en AR</button>
         </model-viewer>
         <div class="info-box-ar-tip" id="ar-tip-box"></div>
