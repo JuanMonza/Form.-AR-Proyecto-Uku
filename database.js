@@ -106,10 +106,14 @@ export class Database {
             initialProgress[`QR_${speciesId}_Completado`] = false;
         }
 
+        // Obtener solo la fecha actual (sin hora)
+        const fechaActual = new Date().toISOString().split('T')[0]; // Formato: YYYY-MM-DD
+        
         console.log('🔄 Enviando a Supabase...', { 
             nombre_completo: nombreLimpio, 
             telefono: telefonoLimpio,
             ciudad: ciudadLimpia,
+            fecha_registro: fechaActual,
             progreso: initialProgress 
         });
 
@@ -120,6 +124,7 @@ export class Database {
                     nombre_completo: nombreLimpio, 
                     telefono: telefonoLimpio,
                     ciudad: ciudadLimpia,
+                    fecha_registro: fechaActual,
                     progreso: initialProgress
                 },
             ])

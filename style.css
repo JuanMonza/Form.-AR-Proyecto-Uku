@@ -832,3 +832,99 @@ model-viewer {
         display: none;
     }
 }
+/* Estilos para verificación telefónica */
+.verification-channel-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.verification-channel-buttons .btn {
+    flex: 1;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#send-whatsapp-btn {
+    background-color: var(--whatsapp-color) !important;
+    color: white !important;
+}
+
+#send-whatsapp-btn:hover {
+    background-color: #128c7e !important;
+    transform: translateY(-2px);
+}
+
+#send-sms-btn {
+    background-color: #2196F3 !important;
+    color: white !important;
+}
+
+#send-sms-btn:hover {
+    background-color: #1976d2 !important;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: var(--glass-white-25) !important;
+    color: var(--text-dark) !important;
+    border: 1px solid var(--border-medium);
+}
+
+.btn-secondary:hover {
+    background-color: var(--glass-white-30) !important;
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#verification-code {
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 8px;
+    font-weight: bold;
+}
+
+.text-muted {
+    font-size: 12px;
+    color: var(--text-light-gray);
+    display: block;
+    margin-top: 5px;
+}
+
+/* Animación para sección de verificación */
+#verification-section,
+#code-input-section {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive para verificación */
+@media (max-width: 500px) {
+    .verification-channel-buttons {
+        flex-direction: column;
+    }
+    
+    .verification-channel-buttons .btn {
+        width: 100%;
+    }
+    
+    #verification-code {
+        font-size: 20px;
+        letter-spacing: 5px;
+    }
+}
+

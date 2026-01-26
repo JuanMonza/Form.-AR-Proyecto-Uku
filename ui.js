@@ -179,7 +179,7 @@ export function showRegistrationForm() {
                     minlength="7"
                     maxlength="10"
                     autocomplete="tel"
-                    nputmode="numeric"
+                    inputmode="numeric"
                     title="Solo se permiten números (7-10 dígitos)">
                 </div>
                 
@@ -249,6 +249,23 @@ export function showRegistrationForm() {
                 validateForm();
             });
         }
+        const sendWhatsappBtn = document.getElementById('send-whatsapp-btn');
+        const codeInputSection = document.getElementById('code-input-section');
+        const verificationCodeInput = document.getElementById('verification-code');
+        const verifyCodeBtn = document.getElementById('verify-code-btn');
+        const resendCodeBtn = document.getElementById('resend-code-btn');
+        const verificationStatus = document.getElementById('verification-status');
+        const channelName = document.getElementById('channel-name');
+
+        if (!ageCheck || !dataTreatment || !submitBtn || !nombreInput || !telefonoInput || !ciudadInput) {
+            console.error('❌ Error: No se encontraron todos los elementos del formulario');
+            return;
+        }
+
+        // Asegurar que los checkboxes inician unchecked
+        ageCheck.checked = false;
+        dataTreatment.checked = false;
+        submitBtn.disabled = true;
 
         if (dataTreatment) {
             dataTreatment.addEventListener('change', () => {
