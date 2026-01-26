@@ -54,17 +54,18 @@ async function downloadCertificate() {
 
         // --- AJUSTE DE COORDENADAS (X, Y) ---
         // El origen (0,0) es la esquina INFERIOR IZQUIERDA.
-        // Deberás ajustar 'x' e 'y' para centrar el nombre en la línea de tu PDF.
+        // Para BAJAR el nombre: disminuye el valor (ej: -30, -50, -70)
+        // Para SUBIR el nombre: aumenta el valor (ej: +10, +20)
         const textWidth = helveticaFont.widthOfTextAtSize(nombre, fontSize);
         const x = (width - textWidth) / 2; // Centrado horizontal
-        const y = height / 2 + 30;         // Aproximadamente en el centro vertical (¡AJUSTAR!)
+        const y = height / 2 - 110;         // Ajustado para estar debajo de logos
 
         firstPage.drawText(nombre, {
             x: x,
             y: y,
             font: helveticaFont,
             size: fontSize,
-            color: rgb(0.1, 0.1, 0.1), // Color casi negro
+            color: rgb(1, 1, 1), // Color blanco (RGB: 255, 255, 255 = 1, 1, 1 en escala 0-1)
         });
 
         // --- PASO 4: Guardar el PDF y preparar la descarga ---
